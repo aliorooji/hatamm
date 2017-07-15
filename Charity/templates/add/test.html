@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block styles %}
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100vh;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+
+    </style>
+{% endblock %}
+{% block scripts %}
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRAEzWa8J41flFbdXsy6jq7MPHOUrOYkA&callback=initMap">
+    </script>
+{% endblock %}
+{% block _navbar %}
+    {% include 'header.html' with active_link='all' %}
+{% endblock %}
+{% block content %}
+    <script>
+
+        // The following example creates a marker in Stockholm, Sweden using a DROP
+        // animation. Clicking on the marker will toggle the animation between a BOUNCE
+        // animation and no animation.
+
+        var marker;
+
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 11,
+                center: {lat: 35.763, lng: 51.388}
+            });
+
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: {lat: 35.763, lng: 51.388}
+            });
+            marker.addListener('click', toggleBounce);
+        }
+        function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+                alert(marker.position.lat());
+                $("#id_lat").val(marker.position.lat());
+                $("#id_lng").val(marker.position.lng());
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
+        }
+    </script>
+    <br>
+    <br>
+    <div id="map" style="height: 100vh"></div>
+    <form id="form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class="w3-table">
+                {{ form.as_table }}
+        </table>
+        <input type="submit">
+    </form>
+{% endblock content %}
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock footer %}

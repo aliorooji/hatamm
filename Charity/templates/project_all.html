@@ -1,0 +1,518 @@
+{% extends 'base.html' %}
+{% load tags %}
+{% load staticfiles %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-default.css' %}"/>
+    <link href="{% static 'datepicker/css/normalize.css' %}" rel='stylesheet'/>
+    <link href="{% static 'datepicker/css/vertical-responsive-menu.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'datepicker/css/prism.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-default.css' %}"/>
+    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-dark.css' %}"/>
+    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-latoja.css' %}"/>
+    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-melon.css' %}"/>
+    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-lightorang.css' %}"/>
+{% endblock styles %}
+{% block scripts %}
+    <!------------------------------------------------------------------->
+    <script src="{% static 'datepicker/js/prism.js' %}"></script>
+    <script src="{% static 'datepicker/js/vertical-responsive-menu.min.js' %}"></script>
+    <script src="{% static 'datepicker/js/jquery-1.10.1.min.js' %}"></script>
+    <script src="{% static 'datepicker/js/persianDatepicker.min.js' %}"></script>
+    <script src="{% static 'this_project/js/project-all--page-good.js' %}">
+    </script>
+    <script src="{% static 'this_project/js/ajax-get-h-type.js' %}">
+    </script>
+    <script>
+        $(document).scroll(function () {
+            if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                page += 1;
+                if (has_next === true) {
+                    AjaxMapProjectFilter()
+                }
+            }
+        });
+        $('body').on('click', '.see-more-obj', function () {
+            page += 1;
+            AjaxMapProjectFilter()
+        });
+        $("#btn_filter_by_radius").click(function () {
+            $('#filter_main_div').css('display', 'block');
+            $("#div_p_filter_city_select").css('display', 'none');
+            $("#div_p_filter_radius_select").css('display', 'block');
+            $('.p_filter__ml_ch').removeClass('l4').addClass('l6');
+            $("#div_map_and_filter_sub").removeClass('l2').addClass('l6');
+            $('#div_p_filter_inputs').removeClass('l10').addClass('l6');
+            $('#map').css('display', 'block');
+            initialize();
+            c_f_input = null;
+        });
+        $("#btn_filter_by_city").click(function () {
+            $('#filter_main_div').css('display', 'block');
+            $("#div_p_filter_city_select").css('display', 'block');
+            $("#div_p_filter_radius_select").css('display', 'none');
+            $('.p_filter__ml_ch').removeClass('l6').addClass('l4');
+            $("#div_map_and_filter_sub").removeClass('l6').addClass('l2');
+            $('#div_p_filter_inputs').removeClass('l6').addClass('l10');
+            $('#map').css('display', 'none');
+            radius = center_lat = center_lng = null;
+        });
+        $("#close_filter_panel").click(function () {
+            $('#filter_main_div').css('display', 'none');
+        })
+    </script>
+    <script>
+        var t_id = 0, p_f_t_input = 0, c_f_input, center_lat, center_lng,
+            p_f_i_input = 0, p_f_from_h = 'all', radius = 5, has_next = false, page = 1;
+        $('body').on('click', '.acc-btn', function () {
+            t_id = $(this).children('input').val();
+            var next_id = 'acc_div_' + this.id.substr(7, this.id.length);
+            AjaxGetTypeAndTooltip(next_id)
+        });
+        var AjaxGetTypeAndTooltip = function (next_id) {
+            $.ajax({
+                type: "GET",
+                url: "/charity/ajax/get_type_or_tooltip",
+                data: {
+                    t_id: t_id
+                },
+                success: function (data) {
+                    $('#' + next_id).children(".acc_for_del").remove().end();
+                    for (var j = 0, len = data.h_t_list.length; j < len; j++) {
+                        if (data.h_t_list[j].w_ch_or_n === 'n') {
+                            $('#' + next_id).append(
+                                '<h5 id="acc_h5_' + data.h_t_list[j].t__i + '" class="w3-blue-grey acc_for_del  acc_h5_' + data.h_t_list[j].t__i + ' h_type_btn0 w3-margin-0 acc_h5 w3-tooltip"><span class="title_p_holder">' + data.h_t_list[j].t__title + '</span><input type="hidden" value="' + data.h_t_list[j].t__i + '">' +
+                                '<div class=" w3-col s10 m7 l7 w3-light-grey ajax_tTip_main_divs w3-text w3-text-grey w3-card-8 w3-round ' +
+                                'c-overflow-hidden w3-padding w3-animate-opacity" ' +
+                                'style="">' +
+                                '<span class="w3-show-block ajax_tTip_divs w3-col c-overflow-hidden s4 m4 l4"><img class="c-width-100" src="' + data.h_t_list[j].h_t_img + '"></span>' +
+                                '<span class="w3-show-block ajax_tTip_divs w3-col s8 m8 l8 w3-text-grey">با انتخاب این گزینه شما کمک رسانی هایی از نوع <span class="w3-text-green">' + data.h_t_list[j].t__title + '</span> را خواهید دید.</span>' +
+                                '<h4 class="w3-text-green">تعداد پروژه های جاری: ' + data.h_t_list[j].num + '</h4>' +
+                                '</div>' +
+                                '</h5><div id="acc_div_' + data.h_t_list[j].t__i + '" class="acc_for_del acc_wot_child"></div>'
+                            )
+                        }
+                    }
+                    for (var j = 0, len = data.h_t_list.length; j < len; j++) {
+                        if (data.h_t_list[j].w_ch_or_n === 'y') {
+                            $('#' + next_id).append(
+                                '<h5 id="acc_h5_' + data.h_t_list[j].t__i + '" class="acc-btn w3-teal acc_for_del  acc_h5_' + data.h_t_list[j].t__i + '  acc_h5 w3-margin-0 w3-tooltip">' + data.h_t_list[j].t__title + '<input type="hidden" value="' + data.h_t_list[j].t__i + '">' +
+                                '<div class="w3-col s10 m7 l7 w3-light-grey w3-text ajax_tTip_main_divs w3-text-grey w3-card-8 w3-round ' +
+                                'c-overflow-hidden w3-padding w3-animate-opacity" ' +
+                                'style="">' +
+                                '<span class="w3-show-block ajax_tTip_divs w3-col c-overflow-hidden s4 m4 l4"><img class="c-width-100" src="' + data.h_t_list[j].h_t_img + '"></span>' +
+                                '<span class="w3-show-block ajax_tTip_divs w3-col s8 m8 l8">با انتخاب این گزینه شما دسته بندی مربوط به کمک رسانی از نوع <span class="w3-text-green">' + data.h_t_list[j].t__title + '</span> را خواهید دید.</span>' +
+                                '<h3 class="w3-text-green">تعداد پروژه های جاری: ' + data.h_t_list[j].num + '</h3>' +
+                                '</div>' +
+                                '</h5><div id="acc_div_' + data.h_t_list[j].t__i + '" class="acc_for_del acc_with_child"></div>'
+                            )
+
+                        }
+                    }
+                }
+            });
+        };
+    </script>
+    <script>
+        var headers = ["H1", "H2", "H3", "H4", "H5", "H6"];
+
+        $(".accordion").click(function (e) {
+            var target = e.target,
+                name = target.nodeName.toUpperCase();
+
+            if ($.inArray(name, headers) > -1) {
+                var subItem = $(target).next();
+
+                var depth = $(subItem).parents().length;
+                var allAtDepth = $(".accordion p, .accordion div").filter(function () {
+                    if ($(this).parents().length >= depth && this !== subItem.get(0)) {
+                        return true;
+                    }
+                });
+                $(allAtDepth).slideUp("fast");
+                subItem.slideToggle("fast", function () {
+                });
+            }
+        });
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRAEzWa8J41flFbdXsy6jq7MPHOUrOYkA&libraries=places&callback=initialize"
+            async defer></script>
+    <script type="text/javascript">
+        {#        var map;#}
+        {#        var UMarker;#}
+        {#        function initialize() {#}
+        {#            var googleMapOptions =#}
+        {#                {#}
+        {#                    center: {lat: 35.6627, lng: 51.388},#}
+        {#                    zoom: 12,#}
+        {#                    panControl: true,#}
+        {#                    zoomControl: true,#}
+        {#                    mapTypeControl: true,#}
+        {#                    streetViewControl: true,#}
+        {#                    overviewMapControl: true,#}
+        {#                    rotateControl: true,#}
+        {#                    zoomControlOptions: {#}
+        {#                        style: google.maps.ZoomControlStyle.SMALL#}
+        {#                    },#}
+        {#                    scaleControl: true,#}
+        {#                    mapTypeId: google.maps.MapTypeId.ROADMAP#}
+        {#                };#}
+        {#            map = new google.maps.Map(document.getElementById("map"), googleMapOptions);#}
+        {#            var filter_marker = new google.maps.Marker({#}
+        {#                position: map.center,#}
+        {#                map: map,#}
+        {#                draggable: true,#}
+        {#                title: 'لطفا در نقطه مورد نظرتان قرار دهید و روی آن کلیک کنید.',#}
+        {#                icon: "http://maps.google.com/mapfiles/ms/micons/grn-pushpin.png"#}
+        {#            });#}
+        {#            filter_marker.addListener('click', toggleBounce);#}
+        {#            function toggleBounce() {#}
+        {#                center_lat = filter_marker.position.lat();#}
+        {#                center_lng = filter_marker.position.lng();#}
+        {#                map.setCenter(new google.maps.LatLng(center_lat, center_lng));#}
+        {#                alert('محل مورد نظر انتخاب شد')#}
+        {#            }#}
+        {##}
+        {#            navigator.geolocation.getCurrentPosition(function (position) {#}
+        {#                UMarker = new google.maps.Marker({#}
+        {#                    position: {lat: position.coords.latitude, lng: position.coords.longitude},#}
+        {#                    map: map,#}
+        {#                    title: 'شما اینجا هستید',#}
+        {#                    icon: "http://maps.google.com/mapfiles/ms/micons/grn-pushpin.png"#}
+        {#                });#}
+        {#            }, function () {#}
+        {#                handleLocationError();#}
+        {#            });#}
+        {#        }#}
+        function initialize() {
+            var UMarker;
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 35.6627, lng: 51.388},
+                zoom: 13,
+                mapTypeId: 'roadmap'
+            });
+            var filter_marker = new google.maps.Marker({
+                position: map.center,
+                map: map,
+                draggable: true,
+                title: 'لطفا در نقطه مورد نظرتان قرار دهید و روی آن کلیک کنید.',
+                icon: "http://maps.google.com/mapfiles/ms/micons/grn-pushpin.png"
+            });
+            navigator.geolocation.getCurrentPosition(function (position) {
+                UMarker = new google.maps.Marker({
+                    position: {lat: position.coords.latitude, lng: position.coords.longitude},
+                    map: map,
+                    title: 'شما اینجا هستید',
+                    icon: "http://maps.google.com/mapfiles/ms/micons/grn-pushpin.png"
+                });
+            }, function () {
+                handleLocationError();
+            });
+            filter_marker.addListener('click', toggleBounce);
+            function toggleBounce() {
+                center_lat = filter_marker.position.lat();
+                center_lng = filter_marker.position.lng();
+                c_f_input = null;
+                map.setCenter(new google.maps.LatLng(center_lat, center_lng));
+                alert('محل مورد نظر انتخاب شد')
+            }
+
+            var input = document.getElementById('pac-input');
+            var searchBox = new google.maps.places.SearchBox(input);
+            {#            map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('pac-inpu'));#}
+            map.addListener('bounds_changed', function () {
+                searchBox.setBounds(map.getBounds());
+            });
+            searchBox.addListener('places_changed', function () {
+                var places = searchBox.getPlaces();
+
+                if (places.length == 0) {
+                    return;
+                }
+                var bounds = new google.maps.LatLngBounds();
+                places.forEach(function (place) {
+{#                    if (!place.geometry) {#}
+{#                        console.log("Returned place contains no geometry");#}
+{#                        return;#}
+{#                    }#}
+                    filter_marker.setPosition(place.geometry.location);
+                    center_lat = filter_marker.position.lat();
+                    center_lng = filter_marker.position.lng();
+                    c_f_input = null;
+                    if (place.geometry.viewport) {
+                        bounds.union(place.geometry.viewport);
+                    } else {
+                        bounds.extend(place.geometry.location);
+                    }
+                });
+                map.fitBounds(bounds);
+            });
+        }
+    </script>
+{% endblock %}
+{% block _navbar %}
+    {% include 'header.html' %}
+{% endblock %}
+{% block content %}
+    <script>
+        function handleLocationError() {
+        }
+    </script>
+    <script>
+        var AjaxMapProjectFilter = function () {
+            $('#loader-div').css('display', 'block');
+            $.ajax({
+                type: "GET",
+                url: "/charity/ajax/pro_all__filter_for_test",
+                data: {
+                    t_f_id: p_f_t_input,
+                    c_f_input: c_f_input,
+                    i_id: p_f_i_input,
+                    radius: radius,
+                    s1_date: $('#p_f_s1_d_input').val(),
+                    s2_date: $('#p_f_s2_d_input').val(),
+                    e1_date: $('#p_f_e1_d_input').val(),
+                    e2_date: $('#p_f_e2_d_input').val(),
+                    is_from_h: p_f_from_h,
+                    center_lat: center_lat,
+                    center_lng: center_lng,
+                    page: page
+                },
+                success: function (data) {
+                    has_next = data.has_next;
+                    $('#loader-div').css('display', 'none');
+                    for (var j = 0, len = data.obj_list.length; j < len; j++) {
+                        $("#obj_list").append(
+                            '<div class="w3-animate-opacity w3-col obj w3-margin-bottom l12 m12 s12">' +
+                            '<div class="w3-row w3-round w3-border w3-border-green">' +
+                            '<div class="w3-col c-overflow-hidden w3-round s12 m4 l4">' +
+                            '<img src="' + data.obj_list[j].img_url + '" class="c-width-100">' +
+                            '</div>' +
+                            '<div class="w3-col s12 m8 l8 w3-text-grey w3-padding">' +
+                            '<p class="w3-center"><a class="w3-text-green" href="/charity/project/' + data.obj_list[j].id + '">' + data.obj_list[j].title + '</a><p>' +
+                            '<p class="w3-center">' + data.obj_list[j].h_t_title + '<p>' +
+                            '<p class="w3-center"><a class="w3-text-green" href="/charity/project/' + data.obj_list[j].ins_id + '">' + data.obj_list[j].ins_title + '</a><p>' +
+                            '<div class="c-overflow-hidden w3-center c-in-600-none" style="height:68px">' + data.obj_list[j].explanation + '</div>' +
+                            '<div class="c-overflow-hidden w3-center c-in-600-block" style="max-height:40px">' + data.obj_list[j].sentence + '</div>' +
+                            '<div class="w3-center">' +
+                            '<a class="w3-btn w3-green w3-round w3-margin-top" href="/charity/project/' + data.obj_list[j].id + '">دیدن بقیه اطلاعات</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>'
+                        )
+                    }
+                    $("#obj_list").children('.div-see-more-obj').remove().end();
+                    if (has_next === true) {
+                        $("#obj_list").append('<div class="w3-center div-see-more-obj"><br><span class="w3-btn see-more-obj w3-blue w3-round">دیدن بقیه</span><br><br></div>')
+                    }
+                },
+                error: function () {
+                    $('#loader-div').css('display', 'none');
+                    $('#obj_list').children('.obj').remove().end();
+                }
+            });
+        }
+    </script>
+    <div class="w3-light-grey" id="map_and_filter" style="display: none;min-height: 90vh">
+        <br>
+        <br>
+        <div class="w3-center w3-margin-top w3-row">
+            <div class="w3-col l6 m6 s12"><span id="btn_filter_by_radius"
+                                                class="w3-btn w3-indigo w3-margin-top w3-round w3-padding-12">پنل جستجو در مختصات</span>
+            </div>
+            <div class="w3-col l6 m6 s12"><span id="btn_filter_by_city"
+                                                class="w3-btn w3-deep-orange w3-margin-top w3-round w3-padding-12">پنل جستجوی عادی </span>
+            </div>
+        </div>
+        <div class="w3-text-white" dir="rtl">
+            <div id="filter_main_div" class="w3-container  c-in-600-none">
+
+                <div class="w3-row w3-white w3-round w3-border w3-border-green">
+                    <div class="c-in-600-block"><span id="close_filter_panel" class="w3-btn w3-red"><i
+                            class="fa fa-times"
+                            aria-hidden="true"></i></span></div>
+                    <div class="w3-col m12 l6 s12">
+                        <input id="pac-input" class="w3-border-0 w3-text-green w3-input w3-padding controls" type="text"
+                               placeholder="کجا رو میخوای ...">
+                        <div id="map" class="w3-round w3-border w3-border-white"
+                             style="height: 290px"></div>
+                    </div>
+                    <div id="div_p_filter_inputs" class="w3-col w3-row l6 m12 s12">
+                        <div class="w3-row w3-col p_filter__ml_ch s12 m6 l6 w3-padding">
+                            <span class="w3-text-green">نوع کمک رسانی:</span>
+                            <div class="w3-col s12 m12 l12 c-radius-5  w3-dropdown-click w3-center">
+                                <div onclick="dropdownFunction('p_filter_type_select')"
+                                     class="c-cursor-pointer w3-padding-0 w3-input w3-text-grey w3-white p_f_input w3-round  w3-border w3-border-green"
+                                     id="p_f_t_btn">همه
+                                </div>
+                                <div id="p_filter_type_select" class="w3-white c-radius-5 w3-dropdown-content"
+                                     style=" width:100%; z-index:1000">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="div_p_filter_city_select" style="display: none"
+                             class="w3-row w3-col p_filter__ml_ch s12 m6 l6 w3-padding">
+                            <span class="w3-text-green">استان:</span>
+                            <div class="w3-col s12 m12 l12 c-radius-5  w3-dropdown-click w3-center">
+                                <div onclick="dropdownFunction('p_filter_city_select')"
+                                     class="c-cursor-pointer  w3-padding-0 w3-border w3-border-green w3-input w3-text-grey p_f_input w3-round "
+                                     id="p_f_c_btn">همه
+                                </div>
+                                <div id="p_filter_city_select"
+                                     class=" w3-white c-radius-5 w3-dropdown-content cities_list"
+                                     style=" width:100%; z-index:1000">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="div_p_filter_radius_select"
+                             class="w3-row w3-col p_filter__ml_ch s12 m6 l6 w3-padding">
+                            <span class="w3-text-green">شعاع جستجو بر حسب کیلومتر:</span>
+                            <div class="w3-col s12 m12 l12 c-radius-5  w3-dropdown-click w3-center">
+                                <div onclick="dropdownFunction('p_filter_radius_select')"
+                                     class="c-cursor-pointer w3-padding-0 w3-border w3-white w3-border-green w3-input w3-text-grey w3-padding-0 w3-round "
+                                     id="p_filter_radius_btn">5
+                                </div>
+                                <div id="p_filter_radius_select"
+                                     class=" w3-white c-radius-5 w3-dropdown-content"
+                                     style="width:100%; z-index:1000">
+                                    {% with '1 2 3 4 5 6 7 8 9 10' as list %}
+                                        {% for item in list.split %}
+                                            <div class="w3-hover-white w3-hover-text-grey w3-teal w3-border-bottom
+                                            w3-border-white w3-text-white c-cursor-pointer w3-center
+                                            w3-padding-12 panel_radius_btn">
+                                                {{ item }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w3-row w3-col p_filter__ml_ch s12 m6 l6 w3-padding">
+                            <span class="w3-text-green">نام موسسه:</span>
+                            <div class="w3-col s12 m12 l12 c-radius-5  w3-dropdown-click w3-center">
+                                <div
+                                        class="c-cursor-pointer w3-padding-0 w3-border w3-border-green w3-text-grey w3-input p_f_input w3-round "
+                                        id="p-f-i-btn" onclick="dropdownFunction('p_filter_i_select')"
+                                >همه
+                                </div>
+                                <div dir="rtl" id="p_filter_i_select"
+                                     class="w3-white c-radius-5 w3-dropdown-content"
+                                     style=" width:100%; z-index:1000">
+                                    <input placeholder="جستجو" class="w3-input w3-light-grey" id="p-f-i-search"
+                                           type="text" onkeyup="PFISFunction()">
+                                    <table dir="rtl" class="c-radius-5 w3-border-0 w3-table-all"
+                                           id="p-f-instituteTable">
+                                        <tr dir="rtl" class="w3-teal w3-hover-light-grey w3-hover-text-green">
+                                            <td class="c-cursor-pointer p-f-i-op w3-center">همه<input
+                                                    type="hidden"
+                                                    value="0">
+                                            </td>
+                                        </tr>
+                                        {% for ins in institute_list %}
+                                            <tr dir="rtl" class="w3-teal w3-hover-light-grey w3-hover-text-green">
+                                                <td class="c-cursor-pointer p-f-i-op w3-center">{{ ins.title }}<input
+                                                        type="hidden"
+                                                        value="{{ ins.id }}">
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w3-col s12 m6 p_filter__ml_ch l6 w3-padding">
+                            <span class="w3-text-green">کمک رسانی از خانه یا نه:</span>
+                            <div class="w3-col s12 m12 l12 c-radius-5 w3-round w3-dropdown-hover w3-center">
+                                <div
+                                        class="w3-text-grey w3-padding-0 w3-border w3-border-green  w3-input w3-round"
+                                        id="from_home_or_no_btn">همه
+                                </div>
+                                <div id="from_home_or_no_select" class=" w3-white w3-dropdown-content"
+                                     style=" width:100%; z-index:1000">
+                                    {#                                        <input type="hidden" value="no" class=""#}
+                                    {#                                 w3-round              id="p-f-from-h" name="is_from_h">#}
+                                    <div class="w3-hover-white w3-teal w3-border-top w3-border-white c-cursor-pointer w3-center w3-padding-12 from_home_or_no_op">
+                                        <input type="hidden" value="all">همه
+                                    </div>
+                                    <div class="w3-hover-white w3-teal w3-border-top w3-border-white c-cursor-pointer w3-center w3-padding-12 from_home_or_no_op">
+                                        <input type="hidden" value="no">حضوری
+                                    </div>
+                                    <div class="w3-hover-white w3-teal  w3-border-top w3-border-white c-cursor-pointer w3-center w3-padding-12 from_home_or_no_op">
+                                        <input type="hidden" value="ok">از خانه
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w3-col s12 m6 p_filter__ml_ch l6 w3-padding">
+                            <span class="w3-text-green">فیلتر با تاریخ پایان:</span>
+                            <input type="text" placeholder=" تاریخ پایان از این زمان باشد"
+                                   class="c-cursor-pointer w3-padding-0 w3-border w3-border-green w3-input w3-round p_f_input  w3-text-grey"
+                                   id="p_f_e1_d_input" name="e1_date">
+                            <input type="text" placeholder="تاریخ پایان تا این زمان باشد"
+                                   class="c-cursor-pointer w3-input w3-padding-0 w3-border w3-border-green w3-margin-top w3-round p_f_input  w3-text-grey"
+                                   id="p_f_e2_d_input" name="e2_date">
+                        </div>
+                        <div class="w3-col s12 m6 p_filter__ml_ch l6 w3-padding">
+                            <span class="w3-text-green">فیلتر با تاریخ شروع:</span>
+                            <input type="text" placeholder="تاریخ شروع از این زمان باشد"
+                                   class="c-cursor-pointer w3-input w3-padding-0 w3-round w3-border w3-border-green p_f_input  w3-text-grey"
+                                   id="p_f_s1_d_input" name="s1_date">
+                            <input type="text" placeholder="تاریخ شروع تا این زمان باشد"
+                                   class="c-cursor-pointer w3-margin-top w3-padding-0 w3-input w3-border w3-border-green w3-round p_f_input w3-text-grey"
+                                   id="p_f_s2_d_input" name="s2_date">
+                        </div>
+                    </div>
+                    <div id="div_map_and_filter_sub" class="w3-col l6 m12 s12 w3-padding">
+                        <div id="filter_subs_div">
+                            <button class="w3-btn w3-green btn-lg w3-margin-bottom" style=""
+                                    id="filter-sub">
+                                جستجو
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w3-row">
+            <div class="c-radius-5 w3-row" dir="rtl">
+                <div class="w3-container w3-row">
+                    {#                    <div class="w3-col l2 c-height-1-px"></div>#}
+                    <div class="w3-col l1 w3-padding">
+                    </div>
+                    <div class="w3-col s12 m12 l10">
+                        <br>
+                        <div id="obj_list"></div>
+                        <div id="loader-div" style="display:none">
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                    <div id="obj_list_side" class="w3-col l1 w3-padding">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="min-height: 90vh" id="before_map" class="w3-light-grey w3-container">
+        <br>
+        <br>
+        <br>
+        <h2 class="w3-center w3-text-green">
+            قصد دارید چه کمکی انجام دهید؟
+        </h2>
+        <div class="w3-row">
+            <div class="w3-col m2 l3 c-height-1-px"></div>
+            <div class="w3-col s12 m8 l6">
+                <aside id="accordion_aside" class="accordion accordion_aside w3-round"></aside>
+            </div>
+            <div class="w3-col m2 l3 c-height-1-px"></div>
+        </div>
+    </div>
+{% endblock content %}
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}

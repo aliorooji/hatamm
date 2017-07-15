@@ -1,0 +1,693 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'this_project/css/institute_page.css' %}"/>
+{% endblock %}
+{% block scripts %}
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap-filestyle.js' %}"></script>
+    <script>
+        window.onload = function () {
+            var the_part = '{{ the_part }}';
+            if (the_part !== 'None') {
+                $(".ins_tabs").css('display', 'none');
+                $("#div_" + the_part).css('display', 'block');
+                get_pro_editor = the_part;
+                GetInsPro('table_' + the_part);
+            }
+        };
+    </script>
+    <script>
+        var this_id = "{{ this.id }}", get_pro_editor;
+        $(".ins_tabs_btn").click(function () {
+            var tab_id = 'div' + this.id.substr(3, this.id.length);
+            $(".ins_tabs").css('display', 'none');
+            $('#' + tab_id).css('display', 'block');
+            get_pro_editor = this.id.substr(4, this.id.length);
+            GetInsPro('table' + this.id.substr(3, this.id.length));
+            closeNav()
+        });
+        $("#c_window").scroll(function () {
+            if ($("#c_window").scrollTop() == 0) {
+                $(".container-fluid").css('background-color', '');
+                $(".container-fluid > .navbar-collapse > .fullpage__nav > li > a").css('color', 'teal');
+            } else {
+                $(".container-fluid").css('background-color', 'teal');
+                $(".container-fluid > .navbar-collapse > .fullpage__nav > li > a").css('color', 'white');
+            }
+        });
+        var GetInsPro = function (table_id) {
+            var url_the_part = table_id.substr(table_id.length - 1, table_id.length);
+            var request_path = '{{ request.path }}';
+            $.ajax({
+                type: "GET",
+                url: "/charity/ajax/get_ins_pro",
+                data: {
+                    i_id: this_id,
+                    get_pro_editor: get_pro_editor
+                },
+                success: function (data) {
+                    $('.p_tr').remove().end();
+                    if (data.pro_list) {
+                        for (var j = 0, len = data.pro_list.length; j < len; j++) {
+                            $("#" + table_id).append('<tr id="p_tr_' + data.pro_list[j].p_id + '" class="p_tr"><td class="w3-center"><div style="max-height:88px" class="c-overflow-hidden"><a href="/charity/project/' + data.pro_list[j].p_id + '">' + data.pro_list[j].p_title + '</a></div></td><td class="w3-center"><a href="/charity/add_project/' + data.pro_list[j].p_id + '?next=' + url_the_part + request_path + '" class="w3-btn w3-round w3-blue">ویرایش</a></td></tr>');
+                            if (table_id !== 'table_1') {
+                                $("#p_tr_" + data.pro_list[j].p_id).append('<td class="w3-center" id="p_mtm_td_' + data.pro_list[j].p_id + '"></td>')
+                            }
+                            if (data.pro_list[j].p_has__h_mtm === 't') {
+                                $("#p_mtm_td_" + data.pro_list[j].p_id).append('<span id="btn_see_mtm_' + data.pro_list[j].p_id + '" class="w3-btn w3-round w3-green btn_see_mtm">دیدن ثبت نامی ها<input value="' + data.pro_list[j].p_id + '" type="hidden"></span>')
+                            } else {
+                                $("#p_mtm_td_" + data.pro_list[j].p_id).append('ثبت نامی ندارد')
+                            }
+                            if (table_id === 'table_1') {
+                                $("#p_tr_" + data.pro_list[j].p_id).append('<td class="w3-center" id="p_del_td_' + data.pro_list[j].p_id + '"><span id="p_del_btn_' + data.pro_list[j].p_id + '" class="w3-btn p_del_btn w3-round w3-red">حذف<input type="hidden" value="' + data.pro_list[j].p_id + '"></span></td>')
+                            }
+{#                            if (table_id === 'table_5') {#}
+{#                                $("#p_tr_" + data.pro_list[j].p_id).append('<td class="w3-center" id="p_rev_td_' + data.pro_list[j].p_id + '"><span class="w3-btn btn_note_as_this w3-round w3-teal">نوشتن مطلب<input type="hidden" value="' + data.pro_list[j].p_id + '"></span></td>')#}
+{#                            }#}
+                        }
+                    } else {
+                        $("#" + table_id).append('<tr class="p_tr"><td class="w3-center w3-red w3-padding">پروژه ای وجود ندارد.</td></tr>')
+                    }
+                }
+            });
+        };
+        $('body').on('click', '.btn_see_mtm', function () {
+            var mtm__p_id = $(this).children('input').val();
+            $(this).append('<i class="fa fa-spinner fa-pulse fa-fw"></i>');
+            GetPMtms(mtm__p_id);
+        });
+        var GetPMtms = function (mtm__p_id) {
+            $(".tr_mtm").remove().end();
+            $.ajax({
+                type: "GET",
+                url: "/charity/ajax/get_p_mtms",
+                data: {
+                    mtm__p_id: mtm__p_id
+                },
+                success: function (data) {
+                    if (data.mtm_list) {
+                        $("#modal_see_mtm_helpers").css('display', 'block');
+                        $("#header_see_mtm_helpers").remove().end();
+                        if (get_pro_editor === '2') {
+                            $("#table_see_mtm_helpers").append('<tr id="header_see_mtm_helpers" class="w3-text-deep-orange"><th class="w3-center">نام کاربری</th><th class="w3-center">شماره تلفن</th><th class="w3-center">دکمه قطعی کردن</th><th class="w3-center">دکمه کنسل کردن</th></tr>')
+                        } else {
+                            $("#table_see_mtm_helpers").append('<tr id="header_see_mtm_helpers" class="w3-text-deep-orange"><th class="w3-center">نام کاربری</th><th class="w3-center">شماره تلفن</th><th class="w3-center">دکمه گزارش فرد</th></tr>')
+                        }
+                        for (var j = 0, len = data.mtm_list.length; j < len; j++) {
+                            $("#table_see_mtm_helpers").append('<tr id="tr_mtm' + data.mtm_list[j].mtm_id + '" class="tr_mtm"><td class="w3-center">' + data.mtm_list[j].helper_username + '</td><td class="w3-center">' + data.mtm_list[j].helper_phone + '</td><tr>');
+                            if (get_pro_editor === '2') {
+                                if (data.mtm_list[j].status === 'reserve') {
+                                    $("#tr_mtm" + data.mtm_list[j].mtm_id).append('<td id="definite_this_' + data.mtm_list[j].mtm_id + '" class="w3-center"><span class="w3-btn w3-round btn_fail_or_def btn_definite_this w3-green">قطعی کن<input type="hidden" value="' + data.mtm_list[j].mtm_id + '"></span></td><td id="fail_this_' + data.mtm_list[j].mtm_id + '" class="w3-center"><span class="w3-btn w3-round btn_fail_or_def btn_fail_this w3-red">کنسل کن<input type="hidden" value="' + data.mtm_list[j].mtm_id + '"></span></td>');
+                                } else if (data.mtm_list[j].status === 'definite') {
+                                    $("#tr_mtm" + data.mtm_list[j].mtm_id).append('<td id="definite_this_' + data.mtm_list[j].mtm_id + '" class="w3-center">وضعیت قطعی</td><td id="fail_this_' + data.mtm_list[j].mtm_id + '" class="w3-center">__________</td>');
+                                }
+                            } else {
+                                $("#tr_mtm" + data.mtm_list[j].mtm_id).append('<td id="td_report_this_' + data.mtm_list[j].mtm_id + '" class="w3-center"><span id="btn_report_this_' + data.mtm_list[j].mtm_id + '" class="w3-btn btn_report_this w3-round w3-deep-orange">گزارش فرد<input type="hidden" value="' + data.mtm_list[j].mtm_id + '"></span></td>');
+                            }
+                        }
+                        $(".btn_see_mtm").children('.fa').remove().end();
+                    } else {
+                        $(".btn_see_mtm").children('.fa').remove().end();
+                    }
+                },
+                error: function () {
+                }
+            });
+        };
+        //*************************csrf****************************//
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                    // Only send the token to relative URLs i.e. locally.
+                    xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                }
+            }
+        });
+        //**************************csrf***************************//
+        //**************************defDel***************************//
+        $('body').on('click', '.p_del_btn', function () {
+            var obj_id = $(this).children('input').val();
+            $("#content_post_note").children('.content_post_for_del').remove().end();
+            $("#content_post_note").append('<p class="w3-show-block content_post_for_del w3-padding w3-center">آیا قصد حذف این کمک رسانی را دارید؟<br><span class="w3-btn w3-margin w3-round p_del_btn_no w3-green">نه</span><span class="w3-btn w3-margin p_del_btn_ok w3-round w3-red">بله<input type="hidden" value="' + obj_id + '"></span></p>');
+            $("#post_note").css('display', 'block');
+        });
+        $('body').on('click', '.p_del_btn_ok', function () {
+            var i = $(this).children('input').val();
+            $(this).append('<i class="fa fa-spinner fa-pulse fa-fw"></i>');
+            defDel(i)
+        });
+        $('body').on('click', '.p_del_btn_no', function () {
+            $("#post_note").css('display', 'none');
+        });
+        var defDel = function (obj_id) {
+            $.ajax({
+                type: "POST",
+                url: "/charity/ajax/post/def_del",
+                data: {
+                    obj_id: obj_id,
+                    q: 'Project'
+                },
+                success: function () {
+                    $("#p_tr_" + obj_id).remove().end();
+                    $("#content_post_note").children('.content_post_for_del').remove().end();
+                    $("#content_post_note").append('<p class="w3-padding w3-green content_post_for_del w3-round w3-margin-top">عملیات حذف با موفقیت انجام شد.</p>');
+                    $("#post_note").css('display', 'block');
+                },
+                error: function () {
+                    $(".p_del_btn_ok").children('.fa').remove().end();
+                    $("#content_post_note").children('.content_post_for_del').remove().end();
+                    $("#content_post_note").append('<p class="w3-red content_post_for_del w3-padding w3-round w3-margin-top">عملیات حذف انجام نشد.لطفا دوباره امتحان کنید.در صورت عدم موفقیت با مسئولین پشتیبانی حاتم تماس برقرار کنید. </p>');
+                    $("#post_note").css('display', 'block');
+                }
+            });
+        };
+        //**************************defDel**************************//
+        //**************************failOrDefinite**************************//
+        $('body').on('click', '.btn_definite_this', function () {
+            var obj_id = $(this).children('input').val();
+            $(this).append('<i class="fa fa-spinner fa-pulse fa-fw"></i>');
+            failOrDefinite(obj_id, 'd')
+        });
+        $('body').on('click', '.btn_fail_this', function () {
+            var obj_id = $(this).children('input').val();
+            $(this).append('<i class="fa fa-spinner fa-pulse fa-fw"></i>');
+            failOrDefinite(obj_id, 'f')
+        });
+        var failOrDefinite = function (obj_id, d_or_f) {
+            $.ajax({
+                type: "POST",
+                url: "/charity/ajax/post/fail_or_definite",
+                data: {
+                    obj_id: obj_id,
+                    post_editor: d_or_f
+                },
+                success: function (data) {
+                    $("#p_tr_" + obj_id).remove().end();
+                    $("#content_post_note").children('.content_post_for_del').remove().end();
+                    var m_content;
+                    if (d_or_f === 'd') {
+                        m_content = '<p class="w3-padding w3-green content_post_for_del w3-round w3-margin-top">با موفقیت قطعی شد.</p>';
+                        $("#definite_this_" + obj_id).children('span').remove().end().append('وضعیت قطعی');
+                        $("#fail_this_" + obj_id).children('span').remove().end().append('__________');
+
+                    } else {
+                        m_content = '<p class="w3-padding w3-green content_post_for_del w3-round w3-margin-top">با موفقیت کنسل شد.</p>';
+                        $("#tr_mtm" + obj_id).remove().end();
+                        if (data.is_finished === 't') {
+                            $("#p_mtm_td_" + data.pId).children('span').remove().end().append('ثبت نامی ندارد')
+                        }
+                    }
+                    $("#content_post_note").append(m_content);
+                    $("#post_note").css('display', 'block');
+                    $(".btn_fail_or_def").children('.fa').remove().end();
+                },
+                error: function () {
+                    $("#content_post_note").children('.content_post_for_del').remove().end();
+                    $("#content_post_note").append('<p class="w3-red content_post_for_del w3-padding w3-round w3-margin-top">عملیات حذف انجام نشد.لطفا دوباره امتحان کنید.در صورت عدم موفقیت با مسئولین پشتیبانی حاتم تماس برقرار کنید. </p>');
+                    $("#post_note").css('display', 'block');
+                    $(".btn_fail_or_def").children('.fa').remove().end();
+                }
+            });
+        };
+        //**************************failOrDefinite**************************//
+        //**************************report_this**************************//
+        $('body').on('click', '.btn_report_this', function () {
+            var i = $(this).children('input').val();
+            $("#content_post_note").children('.content_post_for_del').remove().end();
+            $("#content_post_note").append('<div class="w3-padding content_post_for_del w3-center"><h3 class="w3-center w3-text-deep-orange">لطفا شرح گزارش خود را ذکر کنید و دکمه ثبت گزارش را فشار دهید.</h3><textarea style="height:150px" placeholder="این فیلد الزامی است." name="text" id="text" class="w3-col s11 m8 l6 w3-center w3-round w3-border w3-margin w3-border-amber"></textarea><br><span class="w3-btn w3-round sub_report w3-deep-orange">ثبت گزارش<input type="hidden" value="' + i + '"></span></div>');
+            $("#post_note").css('display', 'block');
+        });
+        $('body').on('click', '.sub_report', function () {
+            var i = $(this).children('input').val();
+            reportThis(i, 'r_he')
+        });
+        var reportThis = function (mtm_id, note_type) {
+            var note_text = $("textarea#text").val();
+            $("#content_post_note").children('.content_post_for_del').remove().end();
+            alert(note_text);
+            $.ajax({
+                type: "POST",
+                url: "/note/ajax/post/report_this",
+                data: {
+                    obj_id: mtm_id,
+                    note_type: note_type,
+                    note_text: note_text
+                },
+                success: function (data) {
+                    var our_note;
+                    if (data.ok === 't') {
+                        our_note = '<p class="w3-padding w3-margin-top content_post_for_del w3-center w3-green">گزارش با موفقیت ثبت شد. و جهت بررسی به مسئولین پشتیبانی حاتم خواهد رسید.</p>'
+                    } else if (data.ok === 'not_note') {
+                        our_note = '<p class="w3-padding w3-margin-top content_post_for_del w3-center w3-red">شما شرح گزارش را ذکر نکردید.</p>'
+                    } else {
+                        our_note = '<p class="w3-padding w3-margin-top content_post_for_del w3-center w3-red">گزارش ثبت نشد. لطفا پس از بررسی وضعیت اینترنت دستگاه خود دوباره امتحان کنید. اگر به ثبت گزارش نشدید لطفا با پشتیبانی سامانه تماس برقرار کنید</p>'
+                    }
+                    $("#content_post_note").append(our_note)
+                },
+                error: function () {
+                    $("#content_post_note").append('<p class="w3-padding w3-margin-top content_post_for_del w3-center w3-red">گزارش ثبت نشد. لطفا پس از بررسی وضعیت اینترنت دستگاه خود دوباره امتحان کنید. اگر به ثبت گزارش نشدید لطفا با پشتیبانی سامانه تماس برقرار کنید</p>')
+                }
+            });
+        };
+    </script>
+{% endblock %}
+{% block _navbar %}
+    {% include 'header.html' with active_link='all' %}
+{% endblock %}
+{% block content %}
+    <div id="c_window" class="w3-light-grey" style="min-height: 100vh">
+        <div id="myNav" class="overlay">
+            <span class="closebtn c-cursor-pointer w3-margin-top" onclick="closeNav()">&times;</span>
+            <div class="overlay-content">
+                <span id="btn_ins_info" class="c-cursor-pointer ins_tabs_btn">اطلاعات موسسه</span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span class="w3-col l4 s12 m6 c-height-1-px w3-show-block"><hr class="w3-margin-0 w3-padding-0"></span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span id="btn_1" class="c-cursor-pointer ins_tabs_btn">کمک رسانی های در انتظار تایید</span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span class="w3-col l4 s12 m6 c-height-1-px w3-show-block"><hr class="w3-margin-0 w3-padding-0"></span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span id="btn_2" class="c-cursor-pointer ins_tabs_btn">کمک رسانی های شروع نشده</span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span class="w3-col l4 s12 m6 c-height-1-px w3-show-block"><hr class="w3-margin-0 w3-padding-0"></span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span id="btn_3" class="c-cursor-pointer ins_tabs_btn">کمک رسانی های شروع شده</span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span class="w3-col l4 s12 m6 c-height-1-px w3-show-block"><hr class="w3-margin-0 w3-padding-0"></span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span id="btn_4" class="c-cursor-pointer ins_tabs_btn">کمک رسانی های در انتظار تایید موفقیت</span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span class="w3-col l4 s12 m6 c-height-1-px w3-show-block"><hr class="w3-margin-0 w3-padding-0"></span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span id="btn_5" class="c-cursor-pointer ins_tabs_btn">
+                    کمک رسانی های موفق
+                </span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+                <span class="w3-col l4 s12 m6 c-height-1-px w3-show-block"><hr class="w3-margin-0 w3-padding-0"></span>
+                <span class="w3-col l4 m3 c-height-1-px w3-show-block"></span>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="w3-left-align">
+            <span style="position: fixed;left: 0px ;top: 60px; z-index: 2000"
+                  class="w3-teal w3-margin-left w3-btn w3-round" onclick="openNav()"> منوی صفحات موسسه</span>
+        </div>
+        <!------------------------------main---------------------------->
+        <div id="main_div" class="w3-padding">
+            <!-----------------------------ins_info------------------------->
+            <div class="ins_tabs" id="div_ins_info">
+                <div class="w3-row">
+                    <div class="w3-col l2 c-height-1-px"></div>
+                    <div class="w3-col s12 m12 l8">
+                        <h3 id="this-inf" class=" w3-text-deep-orange w3-center w3-margin-0">اطلاعات موسسه</h3>
+                        <div class="w3-row c-overflow-hidden">
+                            <div class="w3-col s12 m12 l12" dir="rtl">
+                                <div class="w3-row w3-margin-top">
+                                    <div class="w3-col s12 m12 l12 w3-padding">
+                                        <div class="w3-round c-overflow-hidden">
+                                            {% if this.profile_image %}
+                                                {% img_use_by_static this.profile_image.url as img_url %}
+                                                <img class="c-width-100" src="{% static img_url %}">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="w3-col s12 m6 l6 w3-padding">
+                                        <div id="" class="w3-responsive w3-border-amber w3-border">
+                                            <div class="">
+                                                <table id="" class="w3-table-all w3-text-grey c-border-white-3">
+                                                    <tr>
+                                                        <th class="w3-right-align">عنوان:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.title }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">شماره ثبت:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.patent_num }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">موقعیت مکانی:</th>
+                                                        <td class="w3-text-blue w3-center">
+                                                            {% if this.location %}{{ this.location }}{% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">آدرس:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.address }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">تاریخ تاسیس:</th>
+                                                        <td class="w3-text-blue w3-center">
+                                                            {% if this.establishment_date %}
+                                                                {{ this.establishment_date }}{% endif %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">آدرس سایت:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.site_address }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">کد پستی:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.post_code }}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="w3-col s12 m6 l6 w3-padding">
+                                        <div id="" class="w3-responsive w3-border w3-border-amber">
+                                            <div class="">
+                                                <table id="" class="w3-table-all w3-text-grey c-border-white-3">
+                                                    <tr>
+                                                        <th class="w3-right-align">تلفن:</th>
+                                                        <td class="w3-text-blue w3-center">
+                                                            {{ this.phone_num }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">تلفن دوم:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.phone_num2 }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">ایمیل:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.email }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">توئیتر:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.twitter }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">تلگرام:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.telegram }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">فیس بوک:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.facebook }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="w3-right-align">انستاگرام:</th>
+                                                        <td class="w3-text-blue w3-center">{{ this.istagram }}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w3-padding">
+                            <h4 class="w3-center w3-text-deep-orange">اطلاعات نماینده موسسه</h4>
+                            <div id="" class="w3-responsive w3-border w3-border-amber">
+                                <div class="">
+                                    <table id="" class="w3-table-all w3-text-grey c-border-white-3">
+                                        <tr>
+                                            <th class="w3-center">نام و نام خانوادگی</th>
+                                            <th class="w3-center">جایگاه نماینده در موسسه</th>
+                                            <th class="w3-center">تلفن نماینده</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="w3-text-blue w3-center">{{ this.agent }}</td>
+                                            <td class="w3-text-blue w3-center">{{ this.agent_job }}</td>
+                                            <td class="w3-text-blue w3-center">{{ this.agent_num }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        {% if this.help_type1 or this.help_type2 or this.help_type3 %}
+                            <div class="w3-padding">
+                                <h4 class="w3-center w3-text-deep-orange">انواع کمک رسانی موسسه</h4>
+                                <div id="" class="w3-row">
+                                    {% if this.help_type1 %}
+                                        <div class="w3-col s12 m4 l4 w3-border w3-border-light-grey w3-center">
+                                            <div
+                                                    class="w3-padding w3-border w3-border-amber w3-white w3-text-grey">{{ this.help_type1.title }}</div>
+                                        </div>{% endif %}
+                                    {% if this.help_type2 %}
+                                        <div class="w3-col s12 m4 l4 w3-border w3-border-light-grey w3-center">
+                                            <div
+                                                    class="w3-padding w3-border w3-border-amber w3-white w3-text-grey">{{ this.help_type2.title }}</div>
+                                        </div>{% endif %}
+                                    {% if this.help_type3 %}
+                                        <div class="w3-col s12 m4 l4 w3-border w3-border-light-grey w3-center">
+                                            <div
+                                                    class="w3-padding w3-border w3-border-amber w3-white w3-text-grey">{{ this.help_type3.title }}</div>
+                                        </div>{% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if this.explanation %}
+                            <h4 class="w3-text-deep-orange w3-center">توضیحات موسسه</h4>
+                            <div class="w3-col s12 m12 l12 w3-padding">
+                                <div id="" class="w3-responsive w3-border w3-border-amber w3-padding">
+                                    <div class="w3-center w3-text-grey">
+                                        {{ this.explanation }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="w3-center">
+                            <a href="/charity/add_institute?next={{ request.path }}" class="btn btn-lg w3-deep-orange">ویرایش
+                                اطلاعات</a>
+                        </div>
+                    </div>
+                    <div class="w3-col l2 c-height-1-px"></div>
+                </div>
+            </div>
+            <!-----------------------------ins_info------------------------->
+            <!---------------------------waiting_p_div--------------------------->
+            <div class="ins_tabs" id="div_1">
+                <h3 class="w3-text-deep-orange w3-center">کمک رسانی های در انتظار تایید</h3><br>
+                <div class="w3-center"><a href="/charity/add_project/0?next=1{{ request.path }}"
+                                          class="btn btn-lg w3-deep-orange">افزودن
+                    کمک رسانی</a></div>
+                <div>
+                    <div id="" class="w3-responsive w3-padding">
+                        <div class="c-radius-5 w3-white c-border-light-grey-3" style="overflow: auto">
+                            <div>
+                                <div class="w3-padding">
+                                    <input placeholder="جستجو با نام کمک رسانی" type="text"
+                                           id="this-c-projects-search-i"
+                                           class="w3-input w3-round-jumbo w3-border w3-border-amber"
+                                           onkeyup="ThisCPSFunction()">
+                                </div>
+                                <form id="" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <table id="table_1"
+                                           class="this_p_table w3-table-all w3-text-grey w3-border-0">
+                                        <tr class="w3-text-deep-orange">
+                                            <th class="w3-center">نام کمک رسانی</th>
+                                            <th class="w3-center">دکمه ویرایش</th>
+                                            <th class="w3-center">دکمه حذف</th>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="ch_project_i" id="ch-project-i">
+                                    <input type="hidden" name="ch_helper_st_i" id="ch-helper-st-i">
+                                    <input type="hidden" name="post_editor" id="p-post-editor">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!---------------------------waiting_p_div--------------------------->
+            <!---------------------------n_started_p--------------------------->
+            <div class="ins_tabs" id="div_2">
+                <h3 class="w3-text-deep-orange w3-center">کمک رسانی های شروع نشده</h3><br>
+                <div>
+                    <div id="" class="w3-responsive w3-padding">
+                        <div class="c-radius-5 w3-white c-border-light-grey-3" style="overflow: auto">
+                            <div>
+                                <form id="" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <table id="table_2"
+                                           class="this_p_table w3-table-all w3-text-grey w3-border-0">
+                                        <tr class="w3-text-deep-orange">
+                                            <th class="w3-center">نام کمک رسانی</th>
+                                            <th class="w3-center">دکمه ویرایش</th>
+                                            <th class="w3-center">دیدن ثبت نامی ها</th>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="ch_project_i" id="ch-project-i">
+                                    <input type="hidden" name="ch_helper_st_i" id="ch-helper-st-i">
+                                    <input type="hidden" name="post_editor" id="p-post-editor">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!----------------------------n_started_p----------------------------->
+            <!----------------------------started_p----------------------------->
+            <div class="ins_tabs" id="div_3">
+                <h3 class="w3-text-deep-orange w3-center">کمک رسانی های شروع شده</h3><br>
+                <div>
+                    <div id="" class="w3-responsive w3-padding">
+                        <div class="c-radius-5 w3-white c-border-light-grey-3" style="overflow: auto">
+                            <div>
+                                <form id="" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <table id="table_3"
+                                           class="this_p_table w3-table-all w3-text-grey w3-border-0">
+                                        <tr class="w3-text-deep-orange">
+                                            <th class="w3-center">نام کمک رسانی</th>
+                                            <th class="w3-center">دکمه ویرایش</th>
+                                            <th class="w3-center">دیدن ثبت نامی ها</th>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="ch_project_i" id="ch-project-i">
+                                    <input type="hidden" name="ch_helper_st_i" id="ch-helper-st-i">
+                                    <input type="hidden" name="post_editor" id="p-post-editor">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!----------------------------started_p----------------------------->
+            <!----------------------------past_p----------------------------->
+            <div class="ins_tabs" id="div_4">
+                <h3 class="w3-text-deep-orange w3-center">کمک رسانی های در انتظار تایید موفقیت</h3><br>
+                <div>
+                    <div id="" class="w3-responsive w3-padding">
+                        <div class="c-radius-5 w3-white c-border-light-grey-3" style="overflow: auto">
+                            <div>
+                                <form id="" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <table id="table_4"
+                                           class="this_p_table w3-table-all w3-text-grey w3-border-0">
+                                        <tr class="w3-text-deep-orange">
+                                            <th class="w3-center">نام کمک رسانی</th>
+                                            <th class="w3-center">دکمه ویرایش</th>
+                                            <th class="w3-center">دیدن ثبت نامی ها</th>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="ch_project_i" id="ch-project-i">
+                                    <input type="hidden" name="ch_helper_st_i" id="ch-helper-st-i">
+                                    <input type="hidden" name="post_editor" id="p-post-editor">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!----------------------------past_p----------------------------->
+            <!----------------------------successful_p----------------------------->
+            <div class="ins_tabs" id="div_5">
+                <h3 class="w3-text-deep-orange w3-center">کمک رسانی های موفق</h3><br>
+                <div>
+                    <div id="" class="w3-responsive w3-padding">
+                        <div class="c-radius-5 w3-white c-border-light-grey-3" style="overflow: auto">
+                            <div>
+                                <form id="" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <table id="table_5"
+                                           class="this_p_table w3-table-all w3-text-grey w3-border-0">
+                                        <tr class="w3-text-deep-orange">
+                                            <th class="w3-center">نام کمک رسانی</th>
+                                            <th class="w3-center">دکمه ویرایش</th>
+                                            <th class="w3-center">دیدن ثبت نامی ها</th>
+{#                                            <th class="w3-center">نوشتن مطلب</th>#}
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="ch_project_i" id="ch-project-i">
+                                    <input type="hidden" name="ch_helper_st_i" id="ch-helper-st-i">
+                                    <input type="hidden" name="post_editor" id="p-post-editor">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!----------------------------successful_p----------------------------->
+        </div>
+        <!------------------------------main---------------------------->
+    </div>
+    <!------------===================see_mtm_helpers_modal=================---------------------->
+    <div class="w3-container">
+        <div dir="rtl" id="modal_see_mtm_helpers" class="w3-modal w3-animate-opacity">
+            <div class="w3-modal-content w3-card-8 c-radius-5 w3-text-grey">
+                <header class=" w3-container w3-teal c-radius-5 w3-padding-12">
+            <span onclick="document.getElementById('modal_see_mtm_helpers').style.display='none'"
+                  class="w3-closebtn">&times;</span>
+                </header>
+                <div class="w3-container c-radius-5">
+                    <div id="" class="w3-responsive w3-padding">
+                        <div class="c-radius-5 w3-white c-border-light-grey-3" style="overflow: auto">
+                            <div>
+                                <table id="table_see_mtm_helpers" class="w3-table-all w3-text-grey w3-border-0">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="w3-panel w3-container w3-teal">
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!------------=================see_mtm_helpers_modal===================---------------------->
+    <!------------===================post_note=================---------------------->
+    <div class="w3-container">
+        <div dir="rtl" id="post_note" class="w3-modal w3-animate-opacity">
+            <div class="w3-modal-content w3-card-8 c-radius-5 w3-text-grey">
+                <header class=" w3-container w3-teal c-radius-5 w3-padding-12">
+            <span onclick="document.getElementById('post_note').style.display='none'"
+                  class="w3-closebtn">&times;</span>
+                </header>
+                <div style="overflow: auto" id="content_post_note" class="w3-center c-radius-5">
+                </div>
+                <footer class="w3-panel w3-container w3-teal">
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!------------=================post_note===================---------------------->
+    <!------------===================note_form=================---------------------->
+    <div class="w3-container">
+        <div dir="rtl" id="note_form" class="w3-modal w3-animate-opacity">
+            <div class="w3-modal-content w3-card-8 c-radius-5 w3-text-grey">
+                <header class=" w3-container w3-teal c-radius-5 w3-padding-12">
+            <span onclick="document.getElementById('note_form').style.display='none'"
+                  class="w3-closebtn">&times;</span>
+                </header>
+                <div style="overflow: auto" id="content_note_form" class="w3-center c-radius-5">
+                    <form id="form_of_note" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ note_form }}
+                    </form>
+                </div>
+                <footer class="w3-panel w3-container w3-teal">
+                </footer>
+            </div>
+        </div>
+    </div>
+    <!------------=================note_form===================---------------------->
+    <script>
+        function openNav() {
+            document.getElementById("myNav").style.height = "100%";
+        }
+
+        function closeNav() {
+            document.getElementById("myNav").style.height = "0%";
+        }
+    </script>
+{% endblock content %}

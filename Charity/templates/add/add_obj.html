@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block _navbar %}
+    {% include 'header.html' with active_link='all' %}
+{% endblock %}
+{% block scripts %}
+{% endblock %}
+{% block styles %}
+{% endblock styles %}
+{% block content %}
+    <form id="form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <br>
+        <br>
+        <br>
+    <div class="w3-row">
+        {% for f in form %}
+        <div class="w3-padding w3-col s12 m6 l4">
+            <div>{{ f.errors }}</div>
+            <div class="w3-row">
+                <div class="w3-col s9 m9 l9">{{ f }}</div>
+                <div class="w3-col s3 m3 l3">{{ f.label }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+        <button type="submit">d</button>
+    </form>
+{% endblock %}

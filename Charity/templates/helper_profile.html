@@ -1,0 +1,567 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block _navbar %}
+    {% include 'header.html' with active_link='all' %}
+{% endblock %}
+{% block scripts %}
+    {#    //******************************************get_type ajax***************************************//#}
+    <script src="{% static 'this_project/js/ajax-get-h-type.js' %}">
+    </script>
+    {#    //******************************************get_type ajax***************************************//#}
+
+    <script>
+
+        $('body').on('click', '.p_f_t_op_0', function () {
+            var t_f_id = $(this).children('input').val();
+            var t_title = $(this).children('span').text();
+            $('#id_skill').val(t_f_id);
+            $('#p_f_t_btn').attr('value', t_title);
+            dropdownFunction('p_filter_type_select')
+        });
+        $('body').on('click', '.p_f_t_op_1', function () {
+            var t_f_id = $(this).children('input').val();
+            $('#p_f_t_input').attr('value', t_f_id);
+            var reagent = 'add_project';
+            AjaxGetHType(reagent);
+        });
+        $('body').on('click', '.p_f_t_op_2', function () {
+            var t_f_id = $(this).children('input').val();
+            $('#p_f_t_input').attr('value', t_f_id);
+            var reagent = 'add_project';
+            AjaxGetHType(reagent);
+        });
+    </script>
+    <script>
+        window.onload = function () {
+            var reagent = 'helper_profile';
+            AjaxGetHType(reagent);
+            var tem_key = "{{ tem_key }}";
+            if (tem_key == 'dis_mtm') {
+                $('#dis-project-ok-not').css('display', 'block');
+            }
+        };
+    </script>
+    <script>
+        $('#education-sub').click(function () {
+            $('#education-hidden').attr('value', 'education')
+        });
+        $('#city-sub').click(function () {
+            $('#city-hidden').attr('value', 'city')
+        });
+        $('#skill-sub').click(function () {
+            $('#skill-hidden').attr('value', 'skill')
+        });
+    </script>
+    <script>
+        function ThisCSFunction() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("this-c-p-search-i");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("this-c-p-table");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        $('input').css({
+            'width': 100 + '%',
+            'padding': 12 + 'px', 'border-radius': 4 + 'px', 'border': 1 + 'px solid #1da7ee'
+        });
+        $('select').css({
+            'width': 100 + '%',
+            'padding': 12 + 'px', 'border-radius': 4 + 'px', 'border': 1 + 'px solid #1da7ee'
+        });
+    </script>
+{% endblock scripts %}
+{% block content %}
+    <br>
+    <br>
+    {% if user.profile %}
+        <div class="w3-row w3-text-grey">
+            <div class="w3-col m1 l1 c-height-1-px"></div>
+            <div class="w3-col s12 m10 l10">
+                <div class="w3-row w3-padding">
+                    <div class="w3-col s12 m12 l6 c-height-1-px"></div>
+                    <div class="w3-col s12 m12 l6 w3-padding">
+                        <div class="w3-row w3-padding">
+                            <div class="w3-col s6 l8 m8 c-height-1-px"></div>
+                            <div class="w3-col s6 l4 m4">
+                                <div class="c-width-100 c-overflow-hidden" style="">
+                                    {% if this.profile_image %}
+                                        {% img_use_by_static this.profile_image.url as img_url %}
+                                        <img class="c-width-100 w3-circle w3-card-8" src="{% static img_url %}">
+                                    {% else %}
+                                        <img class="c-width-100 w3-circle"
+                                             src="{% static 'this_project/img/hatam-camp/person1.png' %}" alt="">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="w3-margin-top">
+                                <a href="#this-inf"
+                                   class="w3-white w3-btn w3-border w3-border-orange w3-text-grey w3-margin-top">مشخصات</a>
+                                <a href="#this-more-inf"
+                                   class="w3-white w3-btn w3-border w3-border-orange w3-text-grey w3-margin-top">مشخصات
+                                    تکمیلی</a>
+                                <a href="#add-this-more-inf"
+                                   class="w3-white w3-btn w3-border w3-border-orange w3-text-grey w3-margin-top">افزودن
+                                    مشخصات
+                                    تکمیلی</a>
+                                <a href="#this-pros"
+                                   class="w3-white w3-border w3-border-orange w3-btn w3-text-grey w3-margin-top">پروژهای
+                                    من</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <h2 id="this-inf" class="w3-center w3-text-blue">
+                    مشخصات:
+                </h2>
+                <div class="w3-row w3-margin-top">
+                    <div class="w3-col s12 m6 l6 w3-padding">
+                        <div id="" class="w3-responsive w3-border w3-border-amber c-radius-5">
+                            <div class="">
+                                <table id="" class="w3-table-all w3-text-grey c-border-white-3">
+                                    <tr>
+                                        <th class="w3-right-align">نام کاربری:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.user.username }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">نام:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.user.first_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">نام خانوادگی:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.user.last_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">سن:</th>
+                                        <td class="w3-text-blue w3-center">
+                                            {% if this.birth_day %}{{ this.birth_day }}{% else %}{% endif %}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">جنسیت:</th>
+                                        <td class="w3-text-blue w3-center">
+                                            {% if this.gender %}{{ this.get_gender_display }}{% else %}
+                                            {% endif %}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">دین و مذهب:</th>
+                                        <td class="w3-text-blue w3-center">
+                                            {% if htis.religion %}{{ this.get_religion_display }}{% else %}
+                                            {% endif %}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">کد ملی:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.national_code }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">استان:</th>
+                                        <td class="w3-text-blue w3-center">
+                                            {% if this.location %}{{ this.location }}{% else %}{% endif %}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">آدرس:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.address }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w3-col s12 m6 l6 w3-padding">
+                        <div id="" class="w3-responsive w3-border w3-border-amber c-radius-5">
+                            <div class="">
+                                <table id="" class="w3-table-all w3-text-grey c-border-white-3">
+                                    <tr>
+                                        <th class="w3-right-align">وضعیت تاهل:</th>
+                                        <td class="w3-text-blue w3-center">{% if this.is_married %}متاهل{% else %}
+                                            مجرد{% endif %}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">تلفن همراه:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.phone_num }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">شغل:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.job }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">میزان وقت گذاشتن در ماه:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.monthly_cooperation_time }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">توئیتر:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.twitter }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">تلگرام:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.telegram }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">فیس بوک:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.facebook }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">انستاگرام:</th>
+                                        <td class="w3-text-blue w3-center">{{ this.istagram }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="w3-right-align">دیگران شما را ببینند:</th>
+                                        <td class="w3-text-blue w3-center">{% if this.others_view_u %}بله{% else %}
+                                            خیر{% endif %}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-row w3-margin-top">
+                    <div class="w3-col s12 m12 l12 w3-padding">
+                        <div class="w3-border w3-border-amber w3-padding c-radius-5">
+                            <h3 class="w3-center w3-text-deep-orange">درباره شما</h3>
+                            <p>{{ this.about_you }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-center"><a href="/charity/add_helper?next={{ request.path }}"
+                                          class="btn btn-lg w3-deep-orange ">ویرایش مشخصات</a></div>
+                <div class="w3-padding">
+                    <hr>
+                </div>
+                <h2 id="this-more-inf" class="w3-center w3-text-blue ">مشخصات تکمیلی</h2>
+                <div class="w3-row w3-margin-top">
+                    <div class="w3-col s12 m12 l12 w3-padding">
+                        <h3 class="w3-text-deep-orange w3-center">تحصیلات</h3>
+                        <div id="" class="w3-responsive w3-border w3-border-amber c-radius-5">
+                            <div class="">
+                                <table id="" class="w3-table-all w3-text-grey c-border-white-3">
+                                    <tr>
+                                        <th class="w3-center">رشته</th>
+                                        <th class="w3-center">مقطع</th>
+                                    </tr>
+                                    {% for item in this.user.mtms.all %}
+                                        {% if not item.self_or_hm %}
+                                            {% if item.field %}
+                                                <tr>
+                                                    <td class="w3-center">{{ item.field }}</td>
+                                                    <td class="w3-center">
+                                                        {% if item.level %}{{ item.get_level_display }}{% endif %}</td>
+                                                </tr>{% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+{#                    <div class="w3-col s12 m6 w3-row">#}
+{#                        <div class="w3-col s12 l6 m6 w3-padding">#}
+{#                            <h3 class="w3-center w3-text-deep-orange">مهارت و توانایی</h3>#}
+{#                            <div id="" class="w3-responsive w3-border w3-border-amber c-radius-5">#}
+{#                                <div class="">#}
+{#                                    <table id="" class="w3-table-all w3-text-grey c-border-white-3">#}
+{#                                        <tr>#}
+{#                                            <th class="w3-center">مهارت و توانایی</th>#}
+{#                                        </tr>#}
+{#                                        {% for item in this.user.mtms.all %}#}
+{#                                            {% if not item.self_or_hm %}#}
+{#                                                {% if item.skill %}#}
+{#                                                    <tr>#}
+{#                                                        <td class="w3-center">{{ item.skill.title }}</td>#}
+{#                                                    </tr>{% endif %}#}
+{#                                            {% endif %}#}
+{#                                        {% endfor %}#}
+{#                                    </table>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="w3-col s12 l6 m6 w3-padding">#}
+{#                            <h3 class="w3-center w3-text-deep-orange ">به این استانها می روید</h3>#}
+{#                            <div id="" class="w3-responsive w3-border w3-border-amber c-radius-5">#}
+{#                                <div class="">#}
+{#                                    <table id="" class="w3-table-all w3-text-grey c-border-white-3">#}
+{#                                        <tr>#}
+{#                                            <th class="w3-center">استان</th>#}
+{#                                        </tr>#}
+{#                                        {% for item in this.user.mtms.all %}#}
+{#                                            {% if not item.self_or_hm %}#}
+{#                                                {% if item.cities_wants_to_go %}#}
+{#                                                    <tr>#}
+{#                                                        <td class="w3-center">{{ item.cities_wants_to_go.title }}</td>#}
+{#                                                    </tr>#}
+{#                                                {% endif %}#}
+{#                                            {% endif %}#}
+{#                                        {% endfor %}#}
+{#                                    </table>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+                </div>
+                <div class="w3-padding">
+                    <hr>
+                </div>
+                <h2 id="add-this-more-inf" class="w3-center  w3-text-blue">افزودن مشخصات تکمیلی</h2>
+                <div class="w3-padding w3-margin-top">
+                    <div class="w3-border w3-border-amber c-radius-5">
+                        <div class="w3-light-grey w3-padding">
+                            <h3 class="w3-center  w3-text-deep-orange">افزودن تحصیلات</h3>
+                            <div id="form-div" class="w3-responsive">
+                                <div class="">
+                                    <form id="form" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="w3-row">
+                                            <div class="w3-col  m3 l4 c-height-1-px"></div>
+                                            <div class="w3-col s12 m6 l4">
+                                                <div class="w3-center">
+                                                    <span class="w3-text-grey">{{ h_mtm_form.field.label }}:</span>{{ h_mtm_form.field }}
+                                                </div>
+                                                <br>
+                                                <div class="w3-center">
+                                                    <span class="w3-text-grey">{{ h_mtm_form.level.label }}:</span>{{ h_mtm_form.level }}
+                                                </div>
+                                            </div>
+                                            <div class="w3-col  m3 l4 c-height-1-px"></div>
+                                        </div>
+                                        <br>
+                                        <input type="hidden" name="post_editor" id="education-hidden">
+                                        <div class="w3-center">
+                                            <button type="submit" id="education-sub" name=""
+                                                    class="btn btn-lg w3-deep-orange"
+                                                    value="">
+                                                ثبت تحصیلات
+                                            </button>
+                                        </div>
+                                        <br>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+{#                        <div class="w3-padding">#}
+{#                            <h3 class="w3-center  w3-text-deep-orange">افزودن مهارت و توانایی</h3>#}
+{#                            <div id="form-div" class="">#}
+{#                                <div class="">#}
+{#                                    <form id="form" method="post" enctype="multipart/form-data">#}
+{#                                        {% csrf_token %}#}
+{#                                        <div class="w3-row">#}
+{#                                            <div class="w3-col m3 l4 c-height-1-px"></div>#}
+{#                                            <div class="w3-col s12 m6 l4">#}
+{#                                                <div class="">#}
+{#                                                    <div class="w3-col s12 m12 l12 w3-text-blue-grey">#}
+{#                                                        <div class="w3-col s12 m12 l12 w3-dropdown-click w3-center">#}
+{#                                                            <input onclick="dropdownFunction('p_filter_type_select')"#}
+{#                                                                   type="button" value="توانایی خود را مشخص کنید"#}
+{#                                                                   class=" w3-text-grey w3-white w3-input p_f_input"#}
+{#                                                                   id="p_f_t_btn">#}
+{#                                                            <div id="p_filter_type_select"#}
+{#                                                                 class="w3-white w3-dropdown-content w3-text-grey"#}
+{#                                                                 style=" width:100%; z-index:2">#}
+{#                                                                <input type="hidden" value="0" class="p_f_input"#}
+{#                                                                       id="p_f_t_input">#}
+{#                                                            </div>#}
+{#                                                            <div class="c-overflow-hidden c-height-0-px">{{ h_mtm_form.skill }}</div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="w3-col m3 l4 c-height-1-px"></div>#}
+{#                                        </div>#}
+{#                                        <br>#}
+{#                                        <input type="hidden" name="post_editor" id="skill-hidden">#}
+{#                                        <div class="w3-center">#}
+{#                                            <button type="submit" id="skill-sub" name=""#}
+{#                                                    class="btn btn-lg w3-deep-orange"#}
+{#                                                    value="">#}
+{#                                                ثبت مهارت و توانایی#}
+{#                                            </button>#}
+{#                                        </div>#}
+{#                                        <br>#}
+{#                                    </form>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="w3-light-grey w3-padding">#}
+{#                            <h3 class="w3-center  w3-text-deep-orange">افزودن شهر</h3>#}
+{#                            <div id="form-div" class="w3-responsive">#}
+{#                                <div class="">#}
+{#                                    <form id="form" method="post" enctype="multipart/form-data">#}
+{#                                        {% csrf_token %}#}
+{#                                        <div class="w3-row">#}
+{#                                            <div class="w3-col  m3 l4 c-height-1-px"></div>#}
+{#                                            <div class="w3-col s12 m6 l4">#}
+{#                                                <div class="w3-text-grey">{{ h_mtm_form.cities_wants_to_go }}</div>#}
+{#                                            </div>#}
+{#                                            <div class="w3-col  m3 l4 c-height-1-px"></div>#}
+{#                                        </div>#}
+{#                                        <br>#}
+{#                                        <input type="hidden" name="post_editor" id="city-hidden">#}
+{#                                        <div class="w3-center">#}
+{#                                            <button type="submit" id="city-sub" name=""#}
+{#                                                    class="btn btn-lg w3-deep-orange"#}
+{#                                                    value="">#}
+{#                                                ثبت استان#}
+{#                                            </button>#}
+{#                                        </div>#}
+{#                                        <br>#}
+{#                                    </form>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+                </div>
+                <div class="w3-padding">
+                    <hr>
+                </div>
+                <h2 id="this-pros" class="w3-center  w3-text-blue">پروژه های من</h2>
+                <div class="w3-padding w3-margin-top">
+                    <div class="w3-padding c-radius-5 w3-border w3-border-amber">
+                        <h3 class="w3-text-deep-orange  w3-center">
+                            پروژه های جاری
+                        </h3>
+                        <input placeholder="جستجو با نام پروژه" type="text"
+                               class="w3-input w3-border w3-border-amber" onkeyup="ThisCSFunction()"
+                               id="this-c-p-search-i">
+                        <div class="w3-responsive">
+                            <form id="" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <table id="this-c-p-table" class="w3-table-all w3-text-grey c-border-white-3">
+                                    <tr>
+                                        <th>نام پروژه</th>
+                                        <th></th>
+                                        <th>شماره رابط موسسه</th>
+                                    </tr>
+                                    {% for obj in this.user.mtms.all %}
+                                        {% if obj.project %}
+                                            {% past_or_not obj.project.end_date as past_ok %}
+                                            {% if not past_ok %}
+                                                {% if obj.status == p_mtm.RESERVE  or obj.status == p_mtm.DEFINITE %}
+                                                    <tr class="this-c-p-tr">
+                                                        <td><a class="w3-text-deep-orange"
+                                                               href="/charity/project/{{ obj.project.id }}">{{ obj.project.title }}</a>
+                                                        </td>
+                                                        <td class="w3-text-green">
+                                                            {% if obj.status == p_mtm.DEFINITE %}قطعی شده اید {% else %}
+                                                                <span
+                                                                        onclick="document.getElementById('this-c-p-modal-{{ obj.id }}')
+                                                                                .style.display='block'"
+                                                                        class="btn btn-lg w3-deep-orange this-c-p-btn">انصراف از پروژه</span>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>{{ obj.project.institute.agent_num }}</td>
+                                                    </tr>
+                                                    <div class="w3-container">
+                                                        <div dir="rtl" id="this-c-p-modal-{{ obj.id }}"
+                                                             class="w3-modal w3-animate-opacity">
+                                                            <div class="w3-modal-content w3-card-8 c-radius-5">
+                                                                <header class=" w3-container w3-teal c-radius-5 w3-padding-12">
+            <span onclick="document.getElementById('this-c-p-modal-{{ obj.id }}')
+                    .style.display='none'"
+                  class="w3-closebtn">&times;</span>
+                                                                    <h4 class="w3-center">فکراتو کردی مطمئنی میخوای
+                                                                        انصراف
+                                                                        بدی؟</h4>
+                                                                </header>
+                                                                <div class="w3-container c-radius-5">
+                                                                    <p>برای انصراف لطفا دکمه انصراف رو فشار بده.</p>
+                                                                    <button type="submit" class="btn btn-lg w3-red"
+                                                                            onclick="document.getElementById('this-c-p-hidden').value='dis_p';
+                                                                                    document.getElementById('this-c-p-input').value='{{ obj.id }}'">
+                                                                        انصراف
+                                                                    </button>
+                                                                    <input type="hidden"
+                                                                           id="this-c-p-hidden-{{ obj.id }}">
+                                                                </div>
+                                                                <footer class="w3-panel w3-container w3-teal">
+
+                                                                </footer>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </table>
+                                <input type="hidden" id="this-c-p-input" name="this-c-p-input">
+                                <input type="hidden" id="this-c-p-hidden" name="post_editor">
+                            </form>
+                        </div>
+                        <div class="w3-responsive">
+                            <hr>
+                            <h3 class="w3-text-deep-orange  w3-center">
+                                پروژه های گذشته
+                            </h3>
+                            <table class="w3-table-all w3-text-grey c-border-white-3">
+                                <tr>
+                                    <th class="w3-padding w3-right-align">نام پروژه</th>
+                                    <th></th>
+                                </tr>
+                                {% for obj in this.user.mtms.all %}
+                                    {% if obj.project %}
+                                        {% past_or_not obj.project.end_date as past_ok %}
+                                        {% if past_ok %}
+                                            {% if obj.status == p_mtm.DEFINITE %}
+                                                <tr class="this-c-p-tr">
+                                                    <td class="w3-padding w3-right-align"><a class="w3-text-deep-orange"
+                                                                                             href="/charity/project/{{ obj.project.id }}">{{ obj.project.title }}</a>
+                                                    </td>
+                                                    <td>
+                                                        {#                                                                                                    <a href="#" class="btn btn-lg w3-deep-orange this-c-p-btn">نوشتن یک#}
+                                                        {#                                                                                                        خاطره</a>#}
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                            <input type="hidden" id="this-c-p-input" name="this-c-p-input">
+                            <input type="hidden" id="this-c-p-hidden" name="post_editor">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col m1 l1 c-height-1-px"></div>
+        </div>
+        <!------------=============dis m_t_m=======================---------------------->
+        <div class="w3-container">
+            <div dir="rtl" id="dis-project-ok-not" class="w3-modal w3-animate-opacity">
+                <div class="w3-modal-content w3-card-8 c-radius-5">
+                    <header class=" w3-container w3-teal c-radius-5 w3-padding-12">
+                        <a href="#this-p-h2"
+                           onclick="document.getElementById('dis-project-ok-not').style.display='none'"
+                           class="w3-closebtn">&times;</a>
+                    </header>
+                    <div class="w3-container c-radius-5">
+                        <p>عملیات انصراف با موفقیت انجام شد</p>
+                    </div>
+                    <footer class="w3-panel w3-container w3-teal">
+                    </footer>
+                </div>
+            </div>
+        </div>
+        <!------------=============end dis m_t_m=======================---------------------->
+    {% else %}
+        <div class="w3-row w3-text-grey">
+            <br>
+            <div class="w3-col m2 l3 c-height-1-px"></div>
+            <div class="w3-col s12 m8 l6 w3-padding w3-border w3-border-amber c-radius-5 w3-center">
+                <p>سلام {{ user.username }} هنوز اطلاعاتی درباره خودت ثبت نکردی. بااین این کار شما میتوانید در پروژه های
+                    خیرخواهانه ثبت نام کنید. میخوای امتحان کنی؟ </p>
+                <a
+                        href="/charity/add_helper?next={{ request.path }}" class="btn btn-lg w3-green">تشکیل
+                    پرونده</a>
+            </div>
+            <div class="w3-col m2 l3 c-height-1-px"></div>
+        </div>
+    {% endif %}
+{% endblock content %}

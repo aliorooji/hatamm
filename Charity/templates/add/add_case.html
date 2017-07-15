@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block _navbar %}
+    {% include 'header.html' with active_link='all' %}
+{% endblock %}
+{% block scripts %}
+{#    <script src="{% static 'datepicker/js/prism.js' %}"></script>#}
+{#    <script src="{% static 'datepicker/js/vertical-responsive-menu.min.js' %}"></script>#}
+{#    <script src="{% static 'datepicker/js/jquery-1.10.1.min.js' %}"></script>#}
+{#    <script src="{% static 'datepicker/js/persianDatepicker.min.js' %}"></script>#}
+    <script>
+        var slideIndex = 1;
+        showDivs(slideIndex);
+
+        function plusDivs(n) {
+            showDivs(slideIndex += n);
+        }
+
+        function showDivs(n) {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            if (n > x.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = x.length
+            }
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            x[slideIndex - 1].style.display = "block";
+        }
+    </script>
+
+    <script>
+        $('input').css({
+            'width': 100 + '%',
+            'padding': 12 + 'px', 'border': 1 + 'px solid #ffc107'
+        });
+        $('select').css({
+            'width': 100 + '%',
+            'padding': 12 + 'px', 'border': 1 + 'px solid #ffc107'
+        });
+        $('textarea').css({
+            'width': 100 + '%',
+            'padding': 12 + 'px', 'border': 1 + 'px solid #ffc107'
+        });
+        $('.errorlist').addClass('w3-red')
+    </script>
+    <script>
+        var tem_key = "{{ tem_key }}";
+        if (tem_key == 'f_not_valid') {
+            $('.mySlides').css('display', 'none');
+            $('#last_slide').css('display', 'block')
+        }
+    </script>
+    {#################################for change value#########################}
+    <script>
+        $('body').on('click', '#gender-w', function () {
+            $("#id_gender").val('{{ Case.W }}');
+        });
+        $('body').on('click', '#gender-m', function () {
+            $("#id_gender").val('{{ Case.M }}');
+        });
+        $('body').on('click', '.city-btn', function () {
+            var c_id = $(this).children('input').val();
+            $("#id_location").val(c_id);
+        });
+    </script>
+    {#################################for change value#########################}
+{#    <script>#}
+{#        $(function () {#}
+{#            $("#id_birth_day").persianDatepicker({#}
+{#                formatDate: "YYYY-0M-0D",#}
+                {#                theme: "",#}
+{#                cellWidth: 35, cellHeight: 30, fontSize: 12#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+
+{% endblock %}
+{% block styles %}
+{#    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-default.css' %}"/>#}
+{#    <link href="{% static 'datepicker/css/normalize.css' %}" rel='stylesheet'/>#}
+{#    <link href="{% static 'datepicker/css/fontawesome/css/font-awesome.min.css' %}" rel='stylesheet'/>#}
+{#    <link href="{% static 'datepicker/css/vertical-responsive-menu.min.css' %}" rel="stylesheet"/>#}
+    {#    <link href="{% static 'datepicker/css/style.css' %}" rel="stylesheet"/>#}
+{#    <link href="{% static 'datepicker/css/prism.css' %}" rel="stylesheet"/>#}
+{#    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-default.css' %}"/>#}
+{#    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-dark.css' %}"/>#}
+{#    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-latoja.css' %}"/>#}
+{#    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-melon.css' %}"/>#}
+{#    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-lightorang.css' %}"/>#}
+{% endblock styles %}
+{% block content %}
+    <div style="background-image: url({% static 'this_project/img/Tahery/DSC_0445.JPG' %});background-size: cover" id=""
+         class="w3-display-container c-overflow-hidden w3-text-white">
+        <div class="w3-display-container w3-display-middle w3-large w3-black"
+             style="width: 100%; height: 100%;opacity: .55">
+        </div>
+        <form id="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="min-height: 100vh"
+                 class="mySlides w3-container w3-animate-zoom w3-display-container c-width-100 w3-padding w3-row">
+                <br>
+                <br>
+                <br>
+                <h4 class="w3-center"><span class="w3-circle w3-blue-grey w3-padding w3-text-light-grey">جنسیت مددجو را انتخاب کنید</span>
+                </h4><br>
+                <div class="w3-col w3-row s6 m6 l6">
+                    <div class="w3-col s1 m3 l5 c-height-1-px"></div>
+                    <div class="w3-col s10 m8 l6">
+                        <div id="gender-m" class="w3-center w3-display-container c-cursor-pointer" onclick="plusDivs(1)">
+                            <i class="fa fa-male fa-5x"
+                                        aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="c-height-1-px w3-col s1 m1 l1"></div>
+                </div>
+                <div class="w3-col w3-row s6 m6 l6">
+                    <div class="w3-col s1 m1 l1 c-height-1-px"></div>
+                    <div class="w3-col s10 m8 l6">
+                        <div class="w3-center c-cursor-pointer w3-display-container" onclick="plusDivs(1)" id="gender-w">
+                            <i class="fa fa-female fa-5x"
+                                        aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div class="c-height-1-px w3-col s1 m3 l5"></div>
+                </div>
+            </div>
+            <div id="last_slide" style="min-height: 100vh"
+                 class="mySlides w3-responsive w3-animate-zoom w3-display-container c-width-100 w3-text-light-grey">
+                <br>
+                <br>
+                <br>
+                <h4 class="w3-center">لطفا فرم زیر را پر کنید</h4><h4 class="w3-center">پر کردن گزینه هایی که با <i
+                    class="fa fa-check w3-text-green" aria-hidden="true"></i> مشخص شده اند الزامیست</h4>
+                <div class="w3-row">
+                    <div class="w3-col m1 l2 c-height-1-px"></div>
+                    <div class="w3-col s12 m10 l8">
+                        <div class="w3-padding w3-border-amber w3-border c-overflow-hidden w3-row">
+                            <div class="w3-col s12 m6 l6">
+                                <div class="w3-center">
+                                    <div class="w3-col s12 m12 w3-padding l12 w3-text-blue-grey"><i
+                                            class="fa fa-check w3-text-green" aria-hidden="true"></i><span
+                                            class="w3-text-amber">{{ form.national_code.label }}:</span>
+                                        {{ form.national_code }}{{ form.national_code.errors }}</div>
+                                </div>
+                            </div>
+                            <div class="w3-col s12 m6 l6">
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber">{{ form.job.label }}:</span>
+                                        {{ form.job }}{{ form.job.errors }}</div>
+                                </div>
+                                <div class="w3-center">
+                                    <div class="w3-col s12 m12 w3-padding l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber">{{ form.is_married.label }}</span>
+                                        {{ form.is_married }}{{ form.is_married.errors }}</div>
+                                </div>
+                                <div class="c-overflow-hidden" style="height: 10px">{{ form.gender }}جنسیت:</div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="w3-padding w3-border-amber w3-border c-overflow-hidden w3-row">
+                            <h4 class="w3-center">لطفا مقداری درباره مددجو توضیح دهید تا افراد خیر به کمک ترغیب شوند.</h4>
+                            <br>
+                            <div class="w3-text-blue-grey">{{ form.explanation }}</div>
+                        </div>
+                    </div>
+                    <div class="w3-col m1 l2 c-height-1-px"></div>
+                </div>
+                <br>
+                <br>
+                <div class="w3-row">
+                    <div class="w3-col m3 l4 c-height-1-px"></div>
+                    <div class="w3-col s6 m3 l2 w3-padding">
+                        <span class="w3-padding w3-text-white w3-btn w3-grey w3-display-left  w3-round c-width-100"
+                              onclick="plusDivs(-1)">قبلی</span>
+                    </div>
+                    <div class="w3-col s6 m3 l2 w3-padding">
+                        <button type="submit"
+                                class="w3-padding c-width-100 w3-btn w3-blue-grey w3-round w3-display-right">
+                            ثبت اطلاعات
+                        </button>
+                    </div>
+                    <div class="w3-col m3 l4 c-height-1-px"></div>
+                </div>
+            </div>
+            <br>
+        </form>
+    </div>
+{% endblock %}

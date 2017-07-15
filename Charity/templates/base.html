@@ -1,0 +1,54 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+{#    <meta name="description"#}
+{#          content="با حاتم کارهای خیر داوطلبانه خود را مدیریت کنید.">#}
+    <meta name="description" content="{% block description %}با حاتم کارهای خیر داوطلبانه خود را مدیریت کنید.{% endblock description %}">
+    <meta name="author" content="Arun Ravindran">
+    <link rel="shortcut icon" href="{% static 'this_project/img/logo/logo.png' %}">
+    <title>{% block title %}حاتم{% endblock %}</title>
+    <link href="{% static 'w3schools/css/w3.css' %}" rel="stylesheet">
+    <script src="{% static 'mine/js/jquery-2.2.4.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'w3schools/js/w3codecolor.js' %}" type="text/javascript"></script>
+    <script src="{% static 'bootstrap/js/bootstrap3.3.7.min.js' %}" type="text/javascript"></script>
+    <link href="{% static 'bootstrap/css/bootstrap3.3.7.min.css' %}" rel="stylesheet">
+    <link href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'this_project/css/this-style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'w3schools/css/w3-colors-highway.css' %}">
+    <script src="{% static 'this_project/js/custom.js' %}"></script>
+    <link href="{% static 'this_project/css/site13.css' %}" rel="stylesheet"
+          type="text/css">
+    <link href="{% static 'this_project/css/default25.css' %}"
+          rel="stylesheet" type="text/css">
+
+    <link href="{% static 'this_project/css/style50.css' %}"
+          rel="stylesheet" type="text/css">
+
+    {% block styles %}{% endblock styles %}
+    {% block extrahead %}{% endblock extrahead %}
+</head>
+<body class="c-font-yekan c-font-medium">
+{% block _navbar %}
+{% endblock %}
+<div class="w3-white" style="min-height: 90vh">
+    {% block content %}
+    {% endblock content %}
+</div>
+<div>
+    {% block content-admin %}
+    {% endblock %}
+</div>
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock scripts %}
+{% if GOOGLE_ANALYTICS_PROPERTY_ID %}
+    {% include "google_analytics/ga.html" %}
+{% endif %}
+</body>
+</html>

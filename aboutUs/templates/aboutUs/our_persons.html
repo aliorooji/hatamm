@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block styles %}
+
+{% endblock styles %}
+{% block scripts %}
+    <script>
+        // Get the modal
+        var modal = document.getElementsByClassName('w3-modal');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function () {
+            $('w3-modal').css('display', 'none');
+        }
+    </script>
+{% endblock %}
+{% block _navbar %}
+    {% include 'header.html' with active_link='all' %}
+{% endblock %}
+{% block content %}
+    <div class="w3-container w3-light-grey w3-text-grey w3-animate-opacity">
+        <br>
+        <br>
+        <div class="w3-panel w3-center">
+            <h1> تیم<span class="text-primary">حاتم</span></h1>
+        </div>
+        <div class="w3-row">
+            <div class="w3-center w3-col s12 m4 l4 w3-row w3-padding-12">
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+                <div class="w3-col s8 m8 l8">
+                    <div onclick="document.getElementById('salehioon-modal').style.display='block'"
+                         class="w3-display-container" style="width:100%;cursor: pointer">
+                        <img src="{% static 'this_project/img/about/persons/img_avatar3.png' %}" alt="Person"
+                             style="width:100%" class="w3-circle">
+                        <div class="w3-display-bottommiddle w3-container"><h3>مهدی صالحیون</h3><h4>مدیر پروژه</h4></div>
+                        <br>
+                        <br>
+                        <div class="w3-container" style="width:100%;height:60px">
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+            </div>
+            <!-------------------modal-------------------->
+            <div id="salehioon-modal" class="w3-modal">
+                <div class="w3-modal-content w3-card-8 w3-animate-zoom">
+                    <header class="w3-container w3-light-grey">
+        <span onclick="document.getElementById('salehioon-modal').style.display='none'"
+              class="w3-closebtn w3-light-grey w3-btn">&times;</span>
+                        <h2>مهدی صالحیون</h2>
+                    </header>
+                    <div class="w3-container w3-grey">
+                        <p>بی کار بود مارم علاف کرد.</p>
+                        <p></p>
+                    </div>
+                    <footer class="w3-container w3-light-grey">
+                        <span onclick="document.getElementById('salehioon-modal').style.display='none'"
+                              class="w3-closebtn w3-btn w3-light-grey">بستن</span>
+                    </footer>
+                </div>
+            </div>
+
+            <div class="w3-center w3-col s12 m4 l4 w3-row w3-padding-12">
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+                <div class="w3-col s8 m8 l8">
+                    <div onclick="document.getElementById('salehioon-modal').style.display='block'"
+                         class="w3-display-container" style="width:100%;cursor: pointer">
+                        <img src="{% static 'this_project/img/about/persons/img_avatar3.png' %}" alt="Person"
+                             style="width:100%" class="w3-circle">
+                        <div class="w3-display-bottommiddle w3-container"><h3>مهدی صالحیون</h3><h4>مدیر پروژه</h4></div>
+                        <br>
+                        <br>
+                        <div class="w3-container" style="width:100%;height:60px">
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+            </div>
+            <div class="w3-center w3-col s12 m4 l4 w3-row w3-padding-12">
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+                <div class="w3-col s8 m8 l8">
+                    <div onclick="document.getElementById('salehioon-modal').style.display='block'"
+                         class="w3-display-container" style="width:100%;cursor: pointer">
+                        <img src="{% static 'this_project/img/about/persons/img_avatar3.png' %}" alt="Person"
+                             style="width:100%" class="w3-circle">
+                        <div class="w3-display-bottommiddle w3-container"><h3>مهدی صالحیون</h3><h4>مدیر پروژه</h4></div>
+                        <br>
+                        <br>
+                        <div class="w3-container" style="width:100%;height:60px">
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+            </div>
+        </div>
+        <div class="w3-row">
+            <div class="w3-center w3-col s12 m4 l4 w3-row w3-padding-12">
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+                <div class="w3-col s8 m8 l8">
+                    <div onclick="document.getElementById('salehioon-modal').style.display='block'"
+                         class="w3-display-container" style="width:100%;cursor: pointer">
+                        <img src="{% static 'this_project/img/about/persons/img_avatar3.png' %}" alt="Person"
+                             style="width:100%" class="w3-circle">
+                        <div class="w3-display-bottommiddle w3-container"><h3>مهدی صالحیون</h3><h4>مدیر پروژه</h4></div>
+                        <br>
+                        <br>
+                        <div class="w3-container" style="width:100%;height:60px">
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+            </div>
+            <div class="w3-center w3-col s12 m4 l4 w3-row w3-padding-12">
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+                <div class="w3-col s8 m8 l8">
+                    <div onclick="document.getElementById('salehioon-modal').style.display='block'"
+                         class="w3-display-container" style="width:100%;cursor: pointer">
+                        <img src="{% static 'this_project/img/about/persons/img_avatar3.png' %}" alt="Person"
+                             style="width:100%" class="w3-circle">
+                        <div class="w3-display-bottommiddle w3-container"><h3>مهدی صالحیون</h3><h4>مدیر پروژه</h4></div>
+                        <br>
+                        <br>
+                        <div class="w3-container" style="width:100%;height:60px">
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+            </div>
+            <div class="w3-center w3-col s12 m4 l4 w3-row w3-padding-12">
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+                <div class="w3-col s8 m8 l8">
+                    <div onclick="document.getElementById('salehioon-modal').style.display='block'"
+                         class="w3-display-container" style="width:100%;cursor: pointer">
+                        <img src="{% static 'this_project/img/about/persons/img_avatar3.png' %}" alt="Person"
+                             style="width:100%" class="w3-circle">
+                        <div class="w3-display-bottommiddle w3-container"><h3>مهدی صالحیون</h3><h4>مدیر پروژه</h4></div>
+                        <br>
+                        <br>
+                        <div class="w3-container" style="width:100%;height:60px">
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-col s2 m2 l2" style="height: 10px"></div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+{% endblock content %}
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock footer %}

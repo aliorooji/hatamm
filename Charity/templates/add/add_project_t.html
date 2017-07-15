@@ -1,0 +1,461 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block _navbar %}
+    {% include 'header.html' with active_link='all' %}
+{% endblock %}
+{% block scripts %}
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRAEzWa8J41flFbdXsy6jq7MPHOUrOYkA&callback=initMap">
+    </script>
+    <script>
+        var need_case_key = "{{ need_case_key }}";
+        var c = "{{ form.instance.case.id }}";
+        if (c) {
+            $('#need_case').attr('value', 1);
+        }
+        if (need_case_key == 1) {
+            $('#need_case').attr('value', 1);
+        }
+        $('body').on('click', '#need_case_y', function () {
+            $('#need_case').attr('value', 1);
+            $('#p_case_div').css('display', 'block')
+        });
+        $('body').on('click', '#need_case_n', function () {
+            $('#need_case').attr('value', '');
+            $('#p_case_div').css('display', 'none')
+        });
+        var n_c_val = $("#need_case").val();
+        if (n_c_val == 1) {
+            $("#p_case_div").css('display', 'block')
+        }
+    </script>
+    <script>
+    var p_f_t_input = 0;
+        window.onload = function () {
+            $('input').addClass('w3-round-jumbo');
+            var reagent = 'add_project';
+            var f_instance_gender = "{{ form.instance.gender }}";
+            if (f_instance_gender == "{{ HelperProfile.W }}") {
+                $(".fa-female").removeClass('w3-text-light-grey').addClass('w3-text-green');
+            } else if (f_instance_gender == "{{ HelperProfile.M }}") {
+                $(".fa-male").removeClass('w3-text-light-grey').addClass('w3-text-green');
+            }
+            AjaxGetHType(reagent);
+{#            AjaxGetLoc(reagent);#}
+            AjaxNeedHelperTest();
+            var loc_ph = "{{ form.instance.location.title }}";
+            var t_ph = "{{ form.instance.help_type.title }}";
+            $('#p_f_c_btn').attr('value', loc_ph);
+            $('#p_f_t_btn').attr('value', t_ph)
+        };
+        $('body').on('click', '#gender-w', function () {
+            $("#id_gender").val('{{ HelperProfile.W }}');
+            $(".fa-female").removeClass('w3-text-light-grey').addClass('w3-text-green');
+            $(".fa-male").removeClass('w3-text-green').addClass('w3-text-light-grey')
+        });
+        $('body').on('click', '#gender-m', function () {
+            $("#id_gender").val('{{ HelperProfile.M }}');
+            $(".fa-male").removeClass('w3-text-light-grey').addClass('w3-text-green');
+            $(".fa-female").removeClass('w3-text-green').addClass('w3-text-light-grey')
+        });
+
+    </script>
+    <script src="{% static 'this_project/js/for forms/for forms.js' %}">
+
+    </script>
+    {#    //******************************************get_type ajax***************************************//#}
+    <script src="{% static 'this_project/js/ajax-get-h-type.js' %}">
+    </script>
+    {#    //******************************************get_type ajax***************************************//#}
+    {#    //******************************************get_loc ajax***************************************//#}
+    <script src="{% static 'this_project/js/ajax-get-loc.js' %}">
+    </script>
+    {#    //******************************************get_loc ajax***************************************//#}
+    <script src="{% static 'datepicker/js/prism.js' %}"></script>
+    <script src="{% static 'datepicker/js/vertical-responsive-menu.min.js' %}"></script>
+    <script src="{% static 'datepicker/js/jquery-1.10.1.min.js' %}"></script>
+    <script src="{% static 'datepicker/js/persianDatepicker.min.js' %}"></script>
+    <script src="{% static 'this_project/js/add-project--page/add-project--page.js' %}"></script>
+    <script>
+        $('body').on('click', '.p_f_t_op_0', function () {
+            AjaxNeedHelperTest();
+        });
+    </script>
+    <!---------------------------------// map-------------------------->
+    <!---------------------------------// map-------------------------->
+    <script>
+        var AjaxNeedHelperTest = function () {
+            var s_t_id = "{{ form.instance.help_type.id }}";
+            var h_id = $("#id_help_type").val();
+            if (h_id) {
+                s_t_id = h_id
+            }
+            $.ajax({
+                type: "GET",
+                url: '/charity/ajax/need_helper_test',
+                data: {
+                    s_t_id: s_t_id
+                },
+                success: function (data) {
+                    if (data.need_helper) {
+                        $("#p_helper_fs_div").css('display', 'block');
+                        $("#need_helper").attr('value', 1)
+                    }
+                    else {
+                        $("#p_helper_fs_div").css('display', 'none');
+                        $("#need_helper").attr('value', '')
+                    }
+                },
+                error: function () {
+                }
+            })
+        };
+    </script>
+    <script>
+        var slideIndex = 1;
+        showDivs(slideIndex);
+
+        function plusDivs(n) {
+            showDivs(slideIndex += n);
+        }
+
+        function showDivs(n) {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            if (n > x.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = x.length
+            }
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            x[slideIndex - 1].style.display = "block";
+        }
+    </script>
+    {#################################for change value#########################}
+    <script>
+
+    </script>
+    {#################################for change value#########################}
+    <script>
+
+    </script>
+
+{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-default.css' %}"/>
+    <link href="{% static 'datepicker/css/normalize.css' %}" rel='stylesheet'/>
+    <link href="{% static 'datepicker/css/vertical-responsive-menu.min.css' %}" rel="stylesheet"/>
+    {#        <link href="{% static 'datepicker/css/style.css' %}" rel="stylesheet"/>#}
+    {#    <link href="{% static 'datepicker/css/prism.css' %}" rel="stylesheet"/>#}
+    {#    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-default.css' %}"/>#}
+    {#    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-dark.css' %}"/>#}
+    {#    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-latoja.css' %}"/>#}
+    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-melon.css' %}"/>
+    {#    <link rel="stylesheet" href="{% static 'datepicker/css/persianDatepicker-lightorang.css' %}"/>#}
+{% endblock styles %}
+{% block content %}
+    <script>
+var marker, iLat, iLng;
+        function initMap() {
+            iLat = "{{ form.instance.lat }}";
+            iLng = "{{ form.instance.lng }}";
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 11,
+                center: {lat: 35.763, lng: 51.388}
+            });
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: {lat: 35.763, lng: 51.388},
+                icon:"http://maps.google.com/mapfiles/ms/micons/blue.png"
+            });
+            if (iLat !== 'None') {
+                if (iLng !== 'None') {
+                    var iLatLng = new google.maps.LatLng(iLat, iLng);
+                    map.setCenter(iLatLng);
+                    marker.setPosition(iLatLng);
+                }
+            }
+            marker.addListener('click', toggleBounce);
+            var geocoder = new google.maps.Geocoder();
+            document.getElementById('geo_coder_submit').addEventListener('click', function () {
+                geocodeAddress(geocoder, map);
+            });
+        }
+        function toggleBounce() {
+            $("#id_lat").val(marker.position.lat());
+            $("#id_lng").val(marker.position.lng());
+            alert('موقعیت مکانی انتخاب شد.')
+        }
+        function geocodeAddress(geocoder, resultsMap) {
+            var address = document.getElementById('address').value;
+            geocoder.geocode({'address': address}, function (results, status) {
+                if (status === 'OK') {
+                    resultsMap.setCenter(results[0].geometry.location);
+                    var Mlatlng = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+                    marker.setPosition(Mlatlng);
+                    resultsMap.setZoom(14)
+                } else {
+                    alert('آدرس مورد نظر پیدا نشد.');
+                }
+            });
+        }
+    </script>
+    <div style="" id=""
+         class="w3-display-container c-overflow-hidden w3-text-white">
+        <div class="w3-display-container w3-display-middle w3-large w3-light-grey"
+             style="width: 100%; height: 100%;opacity: .55">
+        </div>
+        <form id="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div id="last_slide" style=""
+                 class="w3-responsive w3-animate-zoom w3-display-container c-width-100">
+                <br>
+                <br>
+                <br>
+                <div class="w3-row">
+                    <div class="w3-col m1 l2 c-height-1-px"></div>
+                    <div class="w3-col s12 m10 l8">
+                        <div class="w3-padding w3-border w3-border-amber w3-row">
+                            <br>
+                            <br>
+                            <h4 class="w3-center">
+                    <span>پر کردن موارد ی که دارای <i class="fa fa-check w3-text-green"
+                                                      aria-hidden="true"></i> میباشند الزامی است.</span>
+                            </h4>
+                            <br>
+                            <div class="w3-col s12 m6 l6">
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber"><i class="fa fa-check w3-text-green"
+                                                                     aria-hidden="true"></i>{{ form.title.label }}:</span>
+                                        {{ form.title }}{{ form.title.errors }}</div>
+                                </div>
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber"><i class="fa fa-check w3-text-green"
+                                                                     aria-hidden="true"></i>{{ form.sentence.label }}:</span>
+                                        {{ form.sentence }}{{ form.sentence.errors }}</div>
+                                </div>
+                                <div class="w3-center">
+                                    <div class="w3-col s12 m12 w3-padding l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber"><i class="fa fa-check w3-text-green"
+                                                                     aria-hidden="true"></i>{{ form.help_type.label }}:</span>
+                                        <div class="w3-col s12 m12 l12  w3-dropdown-hover w3-center">
+                                            <input type="button" value="نوع پروژه را انتخاب کنید"
+                                                   class=" w3-text-grey w3-white w3-input p_f_input"
+                                                   id="p_f_t_btn">
+                                            <div id="p_filter_type_select"
+                                                 class="w3-white w3-dropdown-content"
+                                                 style=" width:100%; z-index:2">
+                                                <input type="hidden" value="0" class="p_f_input"
+                                                       id="p_f_t_input">
+                                            </div>
+                                            <div>{{ form.help_type.errors }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w3-col s12 m6 l6">
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><i
+                                            class="fa fa-check w3-text-green"
+                                            aria-hidden="true"></i><span
+                                            class="w3-text-amber">{{ form.addressed.label }}:</span>
+                                        {{ form.addressed }}{{ form.addressed.errors }}</div>
+                                </div>
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><i
+                                            class="fa fa-check w3-text-green"
+                                            aria-hidden="true"></i><span
+                                            class="w3-text-amber">{{ form.start_date.label }}:</span>
+                                        {{ form.start_date }}{{ form.start_date.errors }}</div>
+                                </div>
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><i
+                                            class="fa fa-check w3-text-green"
+                                            aria-hidden="true"></i><span
+                                            class="w3-text-amber">{{ form.end_date.label }}:</span>
+                                        {{ form.end_date }}{{ form.end_date.errors }}</div>
+                                </div>
+                                <div class="c-overflow-hidden" style="height: 0px">
+                                    {{ form.help_type }}{{ form.gender }}{{ form.lat }}{{ form.lng }}</div>
+                            </div>
+                            <div class="w3-col s12 m12 l12">
+                                <h3 class="w3-center">{{ form.explanation.label }}</h3>
+                                <div class="w3-text-blue-grey w3-padding">
+                                    {{ form.explanation }}{{ form.explanation.errors }}</div>
+                            </div>
+                            <div class="w3-col s12 m12 l12">
+                                <div class="w3-col s12 l12 m12">
+                                    <h3 class="w3-center w3-text-amber">مکان کمک رسانی:</h3>
+                                    <h4 class="w3-center w3-text-amber">لطفا <img src="http://maps.google.com/mapfiles/ms/micons/blue.png"> را در محل مورد نظر خود قرار دهید و روی آن کلیک کنید. </h4>
+                                </div>
+                                <div id="w3-row">
+                                    <div class="w3-col s1 m3 l3 c-height-1-px"></div>
+                                    <div class="w3-col s10 m6 l6 w3-padding">
+                                                <input id="address" type="text" placeholder="جستجو در نقشه" value=""
+                                                       class="w3-text-grey">
+
+                                                <div class="w3-center w3-margin-top">
+                                                    <button id="geo_coder_submit" type="button"
+                                                            class="w3-btn w3-deep-orange w3-round-jumbo">جستجو
+                                                    </button>
+                                                </div>
+                                            </div>
+                                    <div class="w3-col s1 m3 l3 c-height-1-px"></div>
+                                </div>
+                                <div class="w3-text-blue-grey w3-padding w3-col l12">
+                                    <div id="map" style="height: 400px" class=""></div>
+                                    {{ form.lat.errors }}
+                                </div>
+                            </div>
+                            <div class="w3-center w3-text-orange w3-col s12 m12 l12 w3-margin-top w3-margin-bottom w3-padding">
+                                <div class="w3-row">
+                                    <div class="w3-col m2 l3 c-height-1-px"></div>
+                                    <div class="w3-col s12 m8 l6"><i class="fa fa-check w3-text-green"
+                                                                     aria-hidden="true"></i>{{ form.image.label }}: {{ form.profile_image.help_text }}
+                                        {{ form.image }}{{ form.image.errors }}</div>
+                                    <div class="w3-col m2 l3 c-height-1-px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="w3-col m1 l2 c-height-1-px"></div>
+                </div>
+            </div>
+            <div style="display: none" id="p_helper_fs_div"
+                 class="w3-responsive w3-animate-zoom w3-display-container c-width-100">
+                <div class="w3-row">
+                    <div class="w3-col m1 l2 c-height-1-px"></div>
+                    <div class="w3-col s12 m10 l8">
+                        <div class="w3-padding w3-border w3-border-amber w3-row">
+                            <h4 class="w3-center w3-text-deep-orange">
+                                <span>لطفا اگر پروژه شما نیاز به انجام کار توسط مددکار دارد( مانند تدریس و پزشکی و ... ) گزینه های زیر را پر کنید.</span>
+                            </h4>
+                            <br>
+                            <h4 class="w3-center"><span
+                                    class="w3-round-jumbo w3-deep-orange w3-padding w3-text-light-grey">جنسیت پروژه را انتخاب کنید</span>
+                            </h4>
+                            <div class="w3-col w3-row s6 m6 l6 w3-margin-bottom w3-margin-top">
+                                <div class="w3-col s2 m3 l7 c-height-1-px"></div>
+                                <div class="w3-col s8 m8 l4">
+                                    <div id="gender-m" class="w3-center w3-display-container c-cursor-pointer"
+                                         onclick="plusDivs(1)">
+                                        <i class="fa fa-male fa-5x w3-text-light-grey"
+                                           aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="c-height-1-px w3-col s2 m1 l1"></div>
+                            </div>
+                            <div class="w3-col w3-row s6 m6 l6 w3-margin-bottom w3-margin-top">
+                                <div class="w3-col s2 m1 l1 c-height-1-px"></div>
+                                <div class="w3-col s8 m8 l4">
+                                    <div class="c-cursor-pointer w3-center w3-display-container" onclick="plusDivs(1)"
+                                         id="gender-w">
+                                        <i class="fa fa-female fa-5x w3-text-light-grey"
+                                           aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <div class="c-height-1-px w3-col s2 m3 l7"></div>
+                            </div>
+                            <div class="w3-col w3-row s12 m12 l12 w3-margin-bottom w3-margin-top">
+                                <div class="w3-col s3 m3 l3 c-height-1-px"></div>
+                                <div class="w3-col s6 m6 l6 ">{{ form.gender.errors }}</div>
+                                <div class="w3-col s3 m3 l3 c-height-1-px"></div>
+                            </div>
+                            <div class="w3-col s12 m6 l6">
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber">{{ form.min_age.label }}
+                                        ( باید یک عدد بین 10 تا 72 باشد )</span>
+                                        {{ form.min_age }}{{ form.min_age.errors }}</div>
+                                </div>
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber">{{ form.max_age.label }}
+                                        :( باید یک عدد بین کمترین سن ممکن تا 120 باشد )</span>
+                                        {{ form.max_age }}{{ form.max_age.errors }}</div>
+                                </div>
+                            </div>
+                            <div class="w3-col s12 m6 l6">
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber">{{ form.from_home.label }}</span>
+                                        {{ form.from_home }}{{ form.from_home.errors }}</div>
+                                </div>
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber">{{ form.immediate.label }}:</span>
+                                        {{ form.immediate }}{{ form.immediate.errors }}</div>
+                                </div>
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber">{{ form.n_t_experience.label }}:</span>
+                                        {{ form.n_t_experience }}{{ form.n_t_experience.errors }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="w3-col m1 l2 c-height-1-px"></div>
+                </div>
+            </div>
+            <div class="w3-center w3-display-container">
+                <span class="w3-text-deep-orange">آیا پروژه درباره ی یک مددجوی خاص است؟</span>
+                <span id="need_case_y" class="w3-btn w3-round w3-cyan">بله</span>
+                <span id="need_case_n" class="w3-btn w3-round w3-cyan">خیر</span>
+                <br>
+            </div>
+            <div style="display: none" id="p_case_div"
+                 class="w3-responsive w3-animate-zoom w3-display-container c-width-100">
+                <div class="w3-row">
+                    <div class="w3-col m1 l2 c-height-1-px"></div>
+                    <div class="w3-col s12 m10 l8">
+                        <div class="w3-padding w3-border w3-border-amber w3-row">
+                            <h4 class="w3-center w3-text-deep-orange">
+                                در صورتی که پروژه برای کمک به یک مددجوی خاص است لطفا یک مددجو انتخاب کنید در غیر این
+                                صورت نیاز نیست.
+                            </h4>
+                            <div class="w3-col m3 l3 c-height-1-px">
+                            </div>
+                            <div class="w3-col s12 m6 l6">
+                                <div class="w3-center">
+                                    <div class="w3-padding w3-col s12 m12 l12 w3-text-blue-grey"><span
+                                            class="w3-text-amber">{{ form.case.label }}:
+                                        </span>
+                                        {{ form.case }}{{ form.case.errors }}</div>
+                                </div>
+                            </div>
+                            <div class="w3-col m3 l3 c-height-1-px">
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="w3-col m1 l2 c-height-1-px"></div>
+                </div>
+            </div>
+            <div
+                    class="w3-container w3-animate-zoom w3-display-container c-width-100 w3-padding">
+                <div class="w3-row">
+                    <div class="w3-col s3 m5 l5 c-height-1-px"></div>
+                    <div class="w3-col s6 m2 l2">
+                        <button type="submit" class="w3-padding c-width-100 w3-btn w3-teal w3-round w3-display-right">
+                            ثبت اطلاعات
+                        </button>
+                    </div>
+                    <div class="w3-col s3 m5 l5 c-height-1-px"></div>
+                </div>
+            </div>
+            <div>
+                <input type="hidden" name="need_case" value="" id="need_case">
+                <input type="hidden" name="need_helper" value="" id="need_helper">
+            </div>
+        </form>
+    </div>
+{% endblock %}

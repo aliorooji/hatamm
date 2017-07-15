@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load tags %}
+{% block scripts %}
+    <script>
+        function AccordionFunction(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRAEzWa8J41flFbdXsy6jq7MPHOUrOYkA&callback=initMap">
+    </script>
+    <script>
+
+        // The following example creates a marker in Stockholm, Sweden using a DROP
+        // animation. Clicking on the marker will toggle the animation between a BOUNCE
+        // animation and no animation.
+
+        var marker, cLat, cLng;
+        function initMap() {
+            cLat = "{{ this.lat }}";
+            cLng = "{{ this.lng }}";
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15
+            });
+
+            marker = new google.maps.Marker({
+                map: map,
+                animation: google.maps.Animation.DROP
+            });
+            var Mlatlng = new google.maps.LatLng(cLat, cLng);
+            map.setCenter(Mlatlng);
+            marker.setPosition(Mlatlng);
+        }
+    </script>
+{% endblock %}
+{% block _navbar %}
+    {% include 'header.html' with active_link='all' %}
+{% endblock %}
+{% block content %}
+    <div class="w3-text-grey w3-light-grey">
+        <div class="w3-row w3-text-grey" dir="rtl">
+            <div class="w3-col l1 c-height-1-px"></div>
+            <div class="w3-col s12 m12 l10" dir="rtl">
+                <div class="w3-col s12 m12 l12" dir="rtl">
+                    <div class="w3-col m1 l2 c-height-1-px" dir="rtl"></div>
+                    <div class="w3-col s12 m10 l8" dir="rtl">
+                        <div class="w3-margin-top">
+                            {% if this.profile_image %}
+                                {% img_use_by_static this.profile_image.url as img_url %}
+                                <img class="c-width-100" src="{% static img_url %}">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="w3-col m1 l2 c-height-1-px" dir="rtl"></div>
+                </div>
+                <div class="w3-text-grey w3-white c-radius-5" dir="rtl">
+                    <div class="w3-row w3-text-grey w3-container" dir="rtl">
+                        <div class="w3-col s12 m12 l12 w3-text-grey" dir="rtl">
+                            <h3 class="w3-text-grey w3-padding-right">{{ this.title }}</h3>
+                            <div class="w3-text-cyan w3-row">
+                                <div class="w3-col m6 l4 s12 w3-padding">زمینه های خدمت
+                                    رسانی: {% if this.help_type1 %}{{ this.help_type1 }}<span
+                                            class="w3-text-deep-orange">,</span>{% endif %}
+                                    {% if this.help_type2 %}{{ this.help_type2 }}<span
+                                            class="w3-text-deep-orange">,</span>{% endif %}
+                                    {% if this.help_type3 %}{{ this.help_type3 }}{% endif %}</div>
+                                <div class="w3-col m6 l4 s12 w3-padding">تاریخ
+                                    تاسیس:
+                                    {% if this.establishment_date %}{{ this.establishment_date }}{% endif %}</div>
+                                <div class="w3-col m6 l4 s12 w3-padding">شماره
+                                    تلفن:{{ this.phone_num }}<br>{{ this.phone_num2 }}</div>
+                                <div class="w3-col m6 l4 s12 w3-padding">ایمیل:{{ this.email }}</div>
+                                <div class="w3-col m6 l4 s12 w3-padding">کد پستی: {{ this.post_code }}</div>
+                                <div class="w3-col m6 l4 s12 w3-padding">آدرس: {{ this.address }}</div>
+                                <div class="w3-col m6 l4 s12 w3-padding">آدرس سایت: <a
+                                        href="http://{{ this.site_address }}">{{ this.site_address }}</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="c-radius-5 w3-row" dir="rtl">
+                    <br>
+                    <div class="w3-col s12 m12 l9 w3-container">
+                        <div class="w3-padding">
+                            <div class="c-border-bottom-2-s"></div>
+                        </div>
+                        {% if this.explanation %}
+                            <div class="w3-padding">
+                                <h3 class="w3-text-grey">درباره {{ this.title }}</h3>
+                                <p>{{ this.explanation }}</p>
+                            </div>
+                            <div class="w3-padding">
+                                <div class="c-border-bottom-2-s"></div>
+                            </div>
+                        {% endif %}
+                        <div>
+                            {% if this_images %}
+                                <h3 class="w3-text-grey">عکسها</h3>
+                                <div class="w3-row">
+                                    {% for obj in this_images %}
+                                        {% if obj.image %}
+                                            <div class="w3-col s12 m6 l6 w3-padding">
+                                                <div class="c-border-white-3" style="overflow:hidden"
+                                                >
+                                                    {% img_use_by_static obj.image.url as img_url %}
+                                                    <img class="c-width-100" src="{% static img_url %}">
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="w3-padding">
+                                    <div class="c-border-bottom-2-s"></div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="w3-padding">
+                            <h3>محل موسسه</h3>
+                            <div id="map" style="height: 400px" class=""></div>
+                        </div>
+                        <div class="w3-padding">
+                            <div class="c-border-bottom-2-s"></div>
+                        </div>
+                    </div>
+                    <div class="w3-col s12 m12 l3" dir="rtl">
+                        <div class="w3-white w3-padding c-radius-5 w3-border w3-border-light-grey">
+                            <h4 class=" w3-text-grey w3-center">
+                                {{ this.title }} در فضای مجازی
+                            </h4>
+                            <div class="w3-row">
+                                <div class="w3-col s6 m6 l6">
+                                    <a href="https://telegram.me/{{ this.telegram }}"
+                                       class="btn btn-block w3-light-grey w3-padding-16 {% if not this.telegram %}disabled{% endif %} w3-text-deep-orange"><i
+                                            class="fa fa-telegram" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="w3-col s2 m2 l6">
+                                    <a href="https://www.instagram.com/{{ this.instagram }}/"
+                                       class="btn btn-block w3-purple {% if not this.instagram %}disabled{% endif %} w3-padding-16"><i
+                                            class="fa fa-instagram" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="w3-col s2 m2 l6">
+                                    <a href="https://www.facebook.com/{{ this.facebook }}/"
+                                       class="btn btn-block w3-indigo {% if not this.facebook %}disabled{% endif %} w3-padding-16"><i
+                                            class="fa fa-facebook" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="w3-col s2 m2 l6">
+                                    <a href="https://www.twitter.com/{{ this.twitter }}/"
+                                       class="btn btn-block w3-blue {% if not this.twitter %}disabled{% endif %} w3-padding-16"><i
+                                            class="fa fa-twitter" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        {% for pro in this_current_ps %}
+                            <div class="w3-col l12 m4 s12 w3-border w3-border-light-grey">
+                                <div class="w3-col s1 c-height-1-px"></div>
+                                <div class="w3-padding w3-padding-16 w3-white w3-col s10 m12 l12 w3-round">
+                                    <div style="max-height: 250px;overflow: hidden">
+                                        {% if pro.image %}
+                                            {% img_use_by_static pro.image.url as img_url %}
+                                            <img class="c-width-100" src="{% static img_url %}">
+                                        {% elif pro.institute.profile_image %}
+                                            {% img_use_by_static pro.institute.profile_image.url as img_url %}
+                                            <img class="c-width-100" src="{% static img_url %}">
+                                        {% endif %}
+                                    </div>
+                                    <div class="w3-light-grey w3-padding w3-text-grey">
+                                        <a class="w3-text-deep-orange"
+                                           href="/charity/project/{{ pro.id }}">عنوان: {{ pro.title }}</a>
+                                        <br>
+                                        <span class="">نوع پروژه: {{ pro.help_type }}</span>
+                                    </div>
+                                </div>
+                                <div class="w3-col s1 c-height-1-px"></div>
+                            </div>
+                        {% endfor %}
+                        {% for pro in this_past_ps %}
+                            <div class="w3-col l12 m4 s12 w3-border w3-border-light-grey">
+                                <div class="w3-col s1 c-height-1-px"></div>
+                                <div class="w3-padding w3-padding-16 w3-white w3-col s10 m12 l12 w3-round">
+                                    <div style="max-height: 250px;overflow: hidden">
+                                        {% if pro.image %}
+                                            {% img_use_by_static pro.image.url as img_url %}
+                                            <img class="c-width-100" src="{% static img_url %}">
+                                        {% elif pro.institute.profile_image %}
+                                            {% img_use_by_static pro.institute.profile_image.url as img_url %}
+                                            <img class="c-width-100" src="{% static img_url %}">
+                                        {% endif %}
+                                    </div>
+                                    <div class="w3-light-grey w3-padding w3-text-grey">
+                                        <a class="w3-text-deep-orange"
+                                           href="/charity/project/{{ pro.id }}">عنوان: {{ pro.title }}</a>
+                                        <br>
+                                        <span class="">نوع پروژه: {{ pro.help_type }}</span>
+                                        <br>
+                                        <span>پروژه گذشته</span>
+                                    </div>
+                                </div>
+                                <div class="w3-col s1 c-height-1-px"></div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="w3-col l1 c-height-1-px"></div>
+        </div>
+    </div>
+{% endblock content %}
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock footer %}

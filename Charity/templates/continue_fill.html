@@ -1,0 +1,504 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block scripts %}
+{% endblock %}
+{% block _navbar %}
+    {% include 'header.html' with active_link='all' %}
+{% endblock %}
+{% block content %}
+    <div class="w3-light-grey" style="min-height: 96vh">
+        {% if tem_key == 'institute' %}
+            <div class="w3-row w3-text-grey w3-animate-opacity">
+                <div class="w3-col l1 m1 c-height-1-px"></div>
+                <div class="w3-col s12 l10 m10 w3-text-grey">
+                    <br>
+                    <div class="w3-row">
+                        <div class="w3-col l1 c-height-1-px"></div>
+                        <div class="w3-col s12 m12 l10 w3-row">
+                            <div class="w3-col s12 m12 l12 w3-padding w3-center">
+                                <h3 class="w3-center w3-text-teal">لطفا قوانین زیر را به دقت مطالعه کنید.</h3>
+                                <!--------------------------------rules-------------------------------->
+                                <br>
+                                <h1 class="w3-center w3-text-orange">قوانین حاتم</h1>
+                                <br>
+                                <div class="w3-padding w3-border w3-border-amber w3-white w3-text-grey">
+                                    <br>
+                                    <h2 class="w3-text-orange w3-center">قوانین کلی</h2>
+                                    <br>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            مطالب سایت حاتم صرفاً به منظور اطلاع رسانی و معرفی موسسات به اشخاص حقیقی و
+                                            حقوقی است که مایل به آشنایی، همکاری، کمک رسانی، عضویت و فعالیت داوطلبانه در
+                                            حوزه‌های مالی،
+                                            خدماتی و کالایی در پروژه های تعریف شده می‌باشند.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">1</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            حقوق لوگو، تصاویر (اعم از عکس یا ویدئو) و طراحی‌های این وبسایت منحصراً متعلق
+                                            به حاتم بوده،
+                                            اقتباس و کپی از آنها به هر دلیلی حتی با قصد کمک به حاتم، فقط با صدور مجوز
+                                            کتبی از طریق روابط
+                                            عمومی حاتم مجاز است.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">2</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            حقوق لوگو، تصاویر و اطلاعات موسسات منحصراً متعلق به موسسه ی مربوطه بوده،
+                                            اقتباس و کپی از
+                                            آنها به هر دلیلی حتی با قصد کمک به سامانه حاتم و یا موسسه ها، فقط با صدور
+                                            مجوز و کسب اجازه
+                                            از موسسات مجاز است.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">3</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            سامانه حاتم با این باور که تمامی افراد قصد خیر و کمک نیکوکارانه دارند از همه
+                                            شما عزیزان
+                                            تقاضا می‌کند در صورتیکه قصد استفاده از نام و لینک حاتم و یا تبلیغ برای حاتم
+                                            در سایت خود را
+                                            دارید، این کار را با اطلاع و کسب موافقت حاتم انجام دهید. هر گونه استفاده از
+                                            نام، لوگو و لینک
+                                            بدون کسب موافقت کتبی حاتم غیر قانونی بوده و قابل پیگرد قانونی می‌باشد.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">4</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            حاتم به جز دفتری که مشخصات آن در وبسایت قید شده، شعبه یا دفتر نمایندگی دیگری
+                                            در ایران یا
+                                            خارج از ایران ندارد.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">5</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            مطالب سایت حاتم صرفاً به منظور اطلاع رسانی و معرفی موسسات به اشخاص حقیقی و
+                                            حقوقی است که مایل به آشنایی، همکاری، کمک رسانی، عضویت و فعالیت داوطلبانه در
+                                            حوزه‌های مالی،
+                                            خدماتی و کالایی در پروژه های تعریف شده می‌باشند.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">6</span></div>
+                                    </div>
+                                    <hr>
+                                    <br>
+                                </div>
+                                <br>
+                                <div class="w3-padding w3-border w3-border-amber w3-white w3-text-grey">
+                                    <h2 class="w3-text-orange w3-center">حاتم و موسسات</h2>
+                                    <br>
+                                    <br>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            موسسه موظف است کلیه موارد و فیلد های مربوط به پروفایل موسسه را کامل کند در
+                                            غیر این صورت
+                                            موسسه امکان فعالیت در سامانه را ندارد.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">1</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            موسسه بایستی یک شخص را با ذکر منسب به عنوان نماینده ی موسسه به منظور پیگیری
+                                            و ارتباط با حاتم
+                                            به سامانه حاتم معرفی کند.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">2</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            موسسات وظیفه ی تایید و رد درخواست کاربران به منظور فعالیت در پروژه های تعریف
+                                            شده شان را
+                                            دارند و کلیه مسؤلیت همکاری موسسات با کاربران با موسسه است.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">3</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            موسسات بایستی نسبت به درخواست و سوالات کاربران در سامانه حاتم پاسخگو باشند و
+                                            به پاسخ دهی
+                                            کاربران در مورد پروژه هایشان و خود موسسه باشند و هر تغییری در شرایط پروژه
+                                            اعم از متوقف شدن،
+                                            اتمام، تغییر زمان و غیره را در مشخصات پروژه ی تعریف شده اعمال کنند و به
+                                            اطلاع داوطلبان
+                                            برسانند.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">4</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            موسسه موظف است پس از اتمام هر پروژه گزارشی را از اتفاقات و نتایج پروژه در
+                                            سایت حاتم ثبت کند
+                                            تا که کاربران و داوطلبان در جریان اتفاقات و اخبار موسسات و پروژه ها قرار
+                                            بگیرند و نتیجه ی
+                                            کار داوطلبانه شان را ببینند، موسسات در صورت عدم ثبت گزارش پروژه های اتمام
+                                            یافته امکان تعریف
+                                            پروژه جدید ندارند.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">5</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            به منظور بهبود و بهره وری بیشتر از فعالیت در سامانه حاتم لازم است موسسات بعد
+                                            از همکاری با
+                                            داوطلبین نظر خود در مورد داوطلب ثبت کنند و از سیستم امتیازدهی سامانه برای
+                                            داوطلبین استفاده
+                                            کنند.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">6</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            به منظور بهبود و بهره وری بیشتر از فعالیت در سامانه حاتم لازم است موسسات از
+                                            کانال های
+                                            ارتباطی و تبلیغاتی شان همچون کانال و گروه های تلگرامی موسسه، صفحات موسسه در
+                                            فضای مجازی و
+                                            سایت موسسه برای معرفی پروژه هایشان در سامانه حاتم استفاده کنند.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">7</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            موسساتی که در سامانه و در انجام موارد ذکر شده بیشتر فعالیت کنند پروژه هایشان
+                                            و پروفایل خود
+                                            موسسه در سامانه حاتم در مکان بالاتری قرار می گیرد.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">8</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            اگر موسسات موارد ضروری ذکر شده را رعایت نکنند و بعد از ارسال تذکر از سوی
+                                            سامانه حاتم به
+                                            اصلاح رویه نپردازند، امکان فعالیت در سامانه حاتم از موسسه ثلب می شود.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">9</span></div>
+                                    </div>
+                                    <hr>
+                                    <br>
+                                </div>
+                                <br>
+                                <div class="w3-padding w3-border w3-border-amber w3-white w3-text-grey">
+                                    <br>
+                                    <h2 class="w3-text-orange w3-center">حاتم و مددکاران</h2>
+                                    <br>
+                                    <br>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">کاربر موظف است در هنگام ثبت درخواست
+                                            همکاری در پروژه
+                                            شرایط ذکر
+                                            شده در توضیحات پروژه را دارا باشد و از امکان فعالیتش در پروژه مطمئن باشد و
+                                            در صورت ایجاد هر
+                                            تغییری در شرایط داوطلب بایستی در سریع ترین زمان به اطلاع موسسه ای که پروژه
+                                            را تعریف کرده است
+                                            برساند.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">1</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            به منظور بهبود و بهره وری بیشتر از فعالیت در سامانه حاتم لازم است داوطلب بعد
+                                            از همکاری با
+                                            موسسه از سیستم امتیازدهی سامانه برای امتیازدهی موسسه استفاده کند و تجربه و
+                                            نظر خود در مورد
+                                            پروژه و موسسه را در سامانه ثبت کند، در صورت عدم ثبت امتیاز و نظر در اتمام
+                                            پروژه کاربر امکان
+                                            ارسال درخواست فعالیت در پروژه ای جدید را ندارد.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">2</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            در بررسی درخواست کاربران و داوطلبان برای فعالیت در پروژه ها، کاربرانی که
+                                            امتیاز بیشتر و
+                                            میزان فعالیت بیشتری در سامانه حاتم را داشته باشند در اولویت قرار می گیرند.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">3</span></div>
+                                    </div>
+                                    <hr>
+                                    <div class="w3-row">
+                                        <div class="w3-col s11 m11 l11 w3-center">
+                                            به منظور بهبود و بهره وری بیشتر از فعالیت در سامانه حاتم، تیم حاتم در صورت
+                                            بروز هر مشکلی در
+                                            زمینه فعالیت در سامانه و یا همکاری با موسسات پیگیر است، در صورت رؤیت هرگونه
+                                            مشکل و تخلفی از
+                                            طریق راه های ارتباطی تیم حاتم را مطلع کنید تا به اصلاح رویه های غلط
+                                            بپردازیم.
+                                        </div>
+                                        <div class="w3-col s1 m1 l1"><span
+                                                class="w3-light-grey w3-circle c-font-large w3-text-amber work-e-step-num"
+                                                style="">4</span></div>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <br>
+                                <!--------------------------------rules-------------------------------->
+                            </div>
+                            {% if user.is_authenticated %}
+                                <div class="w3-col s12 m12 l12 w3-padding w3-center">
+                                    <a href="/charity/add_institute?next=/charity/institute"
+                                       class="w3-btn w3-padding w3-deep-orange w3-text-white w3-round">وارد کردن اطلاعات موسسه
+                                    </a>
+                                </div>
+                            {% else %}
+                                <h4 class="w3-center w3-padding w3-text-teal">برای ثبت موسسه ابتدا باید حساب کاربری
+                                    تشکیل دهید. اگر این کار را انجام نداده اید لطفا دکمه <span
+                                            class="w3-text-deep-orange">تشکیل حساب کاربری</span> را فشار دهید. اگر قبلا
+                                    حساب کاربری تشکیل داده اید لطفا دکمه <span class="w3-text-deep-orange">ورود</span>
+                                    را فشار دهید.</h4>
+                                <div class="w3-row">
+                                    <div class="w3-col s12 m6 l6 w3-center w3-padding w3-margin-bottom">
+                                        <a href="/accounts/login/?next=/charity/add_institute"
+                                           class="w3-btn w3-padding w3-deep-orange w3-text-white w3-round">ورود</a>
+                                    </div>
+                                    <div class="w3-col s12 m6 l6 w3-center w3-padding w3-margin-bottom">
+                                        <a href="/accounts/signup/?next=/charity/add_institute"
+                                           class="w3-btn w3-padding w3-deep-orange w3-text-white w3-round">تشکیل حساب کاربری</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="w3-col l1 c-height-1-px"></div>
+                    </div>
+                </div>
+                <div class="w3-col l1 m1 c-height-1-px"></div>
+            </div>
+        {% else %}
+            <br>
+            <br>
+            <br>
+            <div class="w3-row w3-text-grey w3-animate-opacity">
+                <div class="w3-col l1 m1 c-height-1-px"></div>
+                <div class="w3-col s12 l10 m10 w3-text-grey">
+                    <div class="w3-row">
+                        <div class="w3-col m1 l2 c-height-1-px"></div>
+                        <div class="w3-col s12 m10 l8 w3-row">
+                            <div class="w3-col s12 m12 l12 w3-padding w3-center">
+                                هنوز فرایند تشکیل پرونده شما کامل نشده است. شما میتوانید این کار را هم اکنون یا در هنگام
+                                ثبت نام در پروژه های داوطلبانه انجام دهید.
+                                <br>
+                                <br>
+                            </div>
+                            <div class="w3-col s12 m6 l6 w3-padding ">
+                                <div class="w3-center">
+                                    <a href="/charity/all_hip/Project"
+                                       class="w3-padding w3-btn w3-deep-orange">دیدن پروژه ها</a>
+                                </div>
+                            </div>
+                            <div class="w3-col s12 m6 l6 w3-padding ">
+                                <div class="w3-center">
+                                    <a href="/charity/add_helper?next=/charity/helper_profile"
+                                       class="w3-btn w3-padding w3-deep-orange w3-text-white">تکمیل پروفایل
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w3-col m1 l2 c-height-1-px"></div>
+                    </div>
+                </div>
+                <div class="w3-col l1 m1 c-height-1-px"></div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock footer %}
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#<head>#}
+{#    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">#}
+{#    <meta charset="utf-8">#}
+{#    <title>Places Searchbox</title>#}
+{#    <style>#}
+{#        /* Always set the map height explicitly to define the size of the div#}
+{#         * element that contains the map. */#}
+{#        #map {#}
+{#            height: 100vh;#}
+{#        }#}
+{##}
+{#        /* Optional: Makes the sample page fill the window. */#}
+{#        html, body {#}
+{#            height: 100%;#}
+{#            margin: 0;#}
+{#            padding: 0;#}
+{#        }#}
+{##}
+{#        #description {#}
+{#            font-family: Roboto;#}
+{#            font-size: 15px;#}
+{#            font-weight: 300;#}
+{#        }#}
+{##}
+{#        #infowindow-content .title {#}
+{#            font-weight: bold;#}
+{#        }#}
+{##}
+{#        #infowindow-content {#}
+{#            display: none;#}
+{#        }#}
+{##}
+{#        #map #infowindow-content {#}
+{#            display: inline;#}
+{#        }#}
+{##}
+{#        .pac-card {#}
+{#            margin: 10px 10px 0 0;#}
+{#            border-radius: 2px 0 0 2px;#}
+{#            box-sizing: border-box;#}
+{#            -moz-box-sizing: border-box;#}
+{#            outline: none;#}
+{#            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);#}
+{#            background-color: #fff;#}
+{#            font-family: Roboto;#}
+{#        }#}
+{##}
+{#        #pac-container {#}
+{#            padding-bottom: 12px;#}
+{#            margin-right: 12px;#}
+{#        }#}
+{##}
+{#        .pac-controls {#}
+{#            display: inline-block;#}
+{#            padding: 5px 11px;#}
+{#        }#}
+{##}
+{#        .pac-controls label {#}
+{#            font-family: Roboto;#}
+{#            font-size: 13px;#}
+{#            font-weight: 300;#}
+{#        }#}
+{##}
+{#        #pac-input {#}
+{#            background-color: #fff;#}
+{#            font-family: Roboto;#}
+{#            font-size: 15px;#}
+{#            font-weight: 300;#}
+{#            margin-left: 12px;#}
+{#            padding: 0 11px 0 13px;#}
+{#            text-overflow: ellipsis;#}
+{#            width: 400px;#}
+{#        }#}
+{#    </style>#}
+{#</head>#}
+{#<body>#}
+{#<input id="pac-input" class="controls" type="text" placeholder="Search Box">#}
+{#<div id="map"></div>#}
+{#<script>#}
+{#    function initialize() {#}
+{#        var UMarker;#}
+{#        var map = new google.maps.Map(document.getElementById('map'), {#}
+{#            center: {lat: 35.6627, lng: 51.388},#}
+{#            zoom: 13,#}
+{#            mapTypeId: 'roadmap'#}
+{#        });#}
+{#        var filter_marker = new google.maps.Marker({#}
+{#            position: map.center,#}
+{#            map: map,#}
+{#            draggable: true,#}
+{#            title: 'لطفا در نقطه مورد نظرتان قرار دهید و روی آن کلیک کنید.',#}
+{#            icon: "http://maps.google.com/mapfiles/ms/micons/grn-pushpin.png"#}
+{#        });#}
+{#        filter_marker.addListener('click', toggleBounce);#}
+{#        function toggleBounce() {#}
+{#            center_lat = filter_marker.position.lat();#}
+{#            center_lng = filter_marker.position.lng();#}
+{#            map.setCenter(new google.maps.LatLng(center_lat, center_lng));#}
+{#            alert('محل مورد نظر انتخاب شد')#}
+{#        }#}
+{#        var input = document.getElementById('pac-input');#}
+{#        var searchBox = new google.maps.places.SearchBox(input);#}
+{#        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);#}
+{#        map.addListener('bounds_changed', function () {#}
+{#            searchBox.setBounds(map.getBounds());#}
+{#        });#}
+{#        searchBox.addListener('places_changed', function () {#}
+{#            var places = searchBox.getPlaces();#}
+{##}
+{#            if (places.length == 0) {#}
+{#                return;#}
+{#            }#}
+{#            var bounds = new google.maps.LatLngBounds();#}
+{#            places.forEach(function (place) {#}
+{#                if (!place.geometry) {#}
+{#                    console.log("Returned place contains no geometry");#}
+{#                    return;#}
+{#                }#}
+{#                filter_marker.setPosition(place.geometry.location);#}
+{#                if (place.geometry.viewport) {#}
+{#                    bounds.union(place.geometry.viewport);#}
+{#                } else {#}
+{#                    bounds.extend(place.geometry.location);#}
+{#                }#}
+{#            });#}
+{#            map.fitBounds(bounds);#}
+{#        });#}
+{#        navigator.geolocation.getCurrentPosition(function (position) {#}
+{#                UMarker = new google.maps.Marker({#}
+{#                    position: {lat: position.coords.latitude, lng: position.coords.longitude},#}
+{#                    map: map,#}
+{#                    title: 'شما اینجا هستید',#}
+{#                    icon: "http://maps.google.com/mapfiles/ms/micons/grn-pushpin.png"#}
+{#                });#}
+{#            }, function () {#}
+{#                handleLocationError();#}
+{#            });#}
+{#    }#}
+{##}
+{#</script>#}
+{#<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRAEzWa8J41flFbdXsy6jq7MPHOUrOYkA&libraries=places&callback=initialize"#}
+{#        async defer></script>#}
+{#</body>#}
+{#</html>#}

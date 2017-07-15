@@ -1,0 +1,402 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block styles %}
+<style>
+.w3-btn-block{
+    margin-top: 1px;
+}
+.w3-accordion-content{
+    padding: 5px;
+}
+</style>
+{% endblock styles %}
+{% block scripts %}
+    <script>
+        function AccordionFunction(id) {
+            var x = document.getElementById(id);
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+    </script>
+{% endblock %}
+{% block _navbar %}
+    {% include 'header.html' with active_link='all' %}
+{% endblock %}
+{% block content %}
+    <div class="w3-container w3-light-grey w3-text-grey w3-animate-opacity" style="min-height: 500px" dir="rtl">
+        <br>
+        <br>
+        <br>
+        <div class="w3-row">
+            <div class="w3-col" style="height: 10px; width: 5%"></div>
+            <div class="w3-col " style="width: 90%">
+                <div style="" dir="rtl" class="w3-text-grey w3-panel w3-padding-8">
+                    <div class=" w3-center">
+                    <h3>سوالات متداول</h3>
+                    </div>
+                    <p class="w3-panel w3-padding-8 w3-white">برای دیدن پاسخ ها لطفا نظر روی سوال کلیک کنید.</p>
+                </div>
+                <div dir="rtl" class="w3-row">
+                    <div class="w3-row w3-col s12 m6 l6">
+                        <div class="w3-col l11 m11">
+                            <div class="w3-panel w3-center"><h3>بخش اول</h3></div>
+                            <div class="w3-accordion w3-light-grey">
+                                <button onclick="AccordionFunction('a1')"
+                                        class="w3-text-blue w3-btn-block w3-white w3-padding-16 w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="a1"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                                <button onclick="AccordionFunction('a2')"
+                                        class="w3-btn-block w3-text-blue w3-white w3-padding-16 w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="a2"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                                <button onclick="AccordionFunction('a3')"
+                                        class="w3-btn-block w3-white w3-text-blue w3-padding-16 w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="a3"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                                <button onclick="AccordionFunction('a4')"
+                                        class="w3-btn-block w3-white w3-padding-16 w3-text-blue w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="a4"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                                <button onclick="AccordionFunction('a5')"
+                                        class="w3-btn-block w3-white w3-padding-16 w3-text-blue w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="a5"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                                <button onclick="AccordionFunction('a6')"
+                                        class="w3-text-blue w3-btn-block w3-white w3-padding-16 w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="a6"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="w3-panel w3-center"><h3>بخش دوم</h3></div>
+                            <div class="w3-accordion w3-light-grey">
+                                <button onclick="AccordionFunction('b1')"
+                                        class="w3-text-blue w3-btn-block w3-white w3-padding-16 w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="b1"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                                <button onclick="AccordionFunction('b2')"
+                                        class="w3-btn-block w3-text-blue w3-white w3-padding-16 w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="b2"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                                <button onclick="AccordionFunction('b3')"
+                                        class="w3-btn-block w3-white w3-text-blue w3-padding-16 w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="b3"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                                <button onclick="AccordionFunction('b4')"
+                                        class="w3-btn-block w3-white w3-padding-16 w3-text-blue w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="b4"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                                <button onclick="AccordionFunction('b5')"
+                                        class="w3-btn-block w3-white w3-padding-16 w3-text-blue w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="b5"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                                <button onclick="AccordionFunction('b6')"
+                                        class="w3-btn-block w3-white w3-padding-16 w3-text-blue w3-right-align">همیاران
+                                    چه کسانی هستند؟
+                                </button>
+                                <div id="b6"
+                                     class="w3-accordion-content w3-animate-opacity w3-white">
+                                    <div class="w3-panel w3-light-grey">
+                                        همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با
+                                        ثبت
+                                        نام در
+                                        سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                        نمایند.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w3-col l1 m1" style="height: 10px"></div>
+                    </div>
+                    {#                    <div class="w3-col  m2 l2" style="height: 10px"></div>#}
+                    <div class="w3-row w3-col s12 m6 l6">
+                        <div class="w3-col l1 m1" style="height: 10px"></div>
+                        <div class="w3-col l11 m11">
+                        <div class="w3-panel w3-center"><h3>بخش سوم</h3></div>
+                        <div class="w3-accordion w3-light-grey">
+                            <button onclick="AccordionFunction('c1')"
+                                    class="w3-text-blue w3-btn-block w3-white w3-padding-16 w3-right-align w3-border-grey">
+                                همیاران چه کسانی هستند؟
+                            </button>
+                            <div id="c1"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                            <button onclick="AccordionFunction('c2')"
+                                    class="w3-text-blue w3-btn-block w3-white w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="c2"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                            <button onclick="AccordionFunction('c3')"
+                                    class="w3-text-blue w3-btn-block w3-white w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="c3"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                            <button onclick="AccordionFunction('c4')"
+                                    class="w3-text-blue w3-btn-block w3-white w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="c4"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                            <button onclick="AccordionFunction('c5')"
+                                    class="w3-text-blue w3-btn-block w3-white w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="c5"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                            <button onclick="AccordionFunction('c6')"
+                                    class="w3-text-blue w3-btn-block w3-white w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="c6"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="w3-panel w3-center"><h3>بخش چهارم</h3></div>
+                        <div class="w3-accordion w3-light-grey">
+                            <button onclick="AccordionFunction('d1')"
+                                    class="w3-text-blue w3-btn-block w3-white w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="d1"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                            <button onclick="AccordionFunction('d2')"
+                                    class="w3-btn-block w3-text-blue  w3-white w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="d2"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                            <button onclick="AccordionFunction('d3')"
+                                    class="w3-btn-block w3-white w3-text-blue w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="d3"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                            <button onclick="AccordionFunction('d4')"
+                                    class="w3-btn-block w3-text-blue w3-white w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="d4"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                            <button onclick="AccordionFunction('d5')"
+                                    class="w3-btn-block w3-white w3-text-blue w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="d5"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                            <button onclick="AccordionFunction('d6')"
+                                    class="w3-btn-block w3-text-blue w3-white w3-padding-16 w3-right-align">همیاران چه
+                                کسانی هستند؟
+                            </button>
+                            <div id="d6"
+                                 class="w3-accordion-content w3-animate-opacity w3-white">
+                                <div class="w3-panel w3-light-grey">
+                                    همیاران افرادی هستند که خواستار نذر وقت، دانش و مهارت خود هستند. این افراد با ثبت
+                                    نام در
+                                    سایت و یا مراجعه به سرای محلات، فرهنگسراها و خانه های فرهنگ، دراین طرح مشارکت
+                                    نمایند.
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="w3-col" style="height: 10px; width: 5%"></div>
+    </div>
+    </div>
+{% endblock content %}
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock footer %}
